@@ -1,0 +1,13 @@
+.Analysis {
+	margin: 30px;
+	border-left: 1px solid lightblue;
+	border-right: 1px solid lightblue;
+	border-top: 1px solid lightblue;
+	text-align: center;
+	height: 100vh;
+	/* background: #313e4c; */
+}
+
+.Analysis-background {
+	/* background-color: #313e4c; */
+}

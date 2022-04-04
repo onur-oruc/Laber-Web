@@ -1,0 +1,25 @@
+.CreateTask__AddButton {
+	margin-top: 10px;
+	margin-left: 65px;
+}
+
+.CreateTask__Box {
+
+	border: 1px solid lightgray;
+	overflow-y: scroll;
+	width: 200px;
+	height: 100px;
+	margin-top: 10px;
+}
+
+.CreateTask__div {
+	display: flex;
+	flex-direction: column;
+	width: 200px;
+	margin-bottom: 50px;
+}
+
+
+.CreateTask__Keywords {
+	margin: 15% 15% 1% 15%;
+}
