@@ -1,15 +1,13 @@
-import React from 'react'
+import { React, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import TaskDetails from './components/TaskDetails'
 import { useState } from 'react'
 import axios from "axios"
 import Button from '@mui/material/Button'
-import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import format from "date-fns/format"
 import { setHours, setMinutes } from 'date-fns'
 import DatePickerComponent from './components/DatePickerComponent'
-
+import WebsiteCheckbox from './components/WebsiteCheckbox'
 
 function CreateTask() {
   const [keywords, updateKeyword] = useState([]);
@@ -19,6 +17,8 @@ function CreateTask() {
   const [endDate, setEndDate] = useState(new Date());
   const [isOpenStart, setIsOpenStart] = useState(false);
   const [isOpenEnd, setIsOpenEnd] = useState(false);
+  const [isTwitterSelected, setTwitterSelected] = useState(true);
+  const [isFacebookSelected, setFacebookSelected] = useState(true);
   
   const deneme = () => {
     axios.get('http://192.168.1.171:5000/fetch_tweets/'+ keywords[0]).then(response => {
@@ -26,6 +26,16 @@ function CreateTask() {
     });
   }
   
+  const handleChangeTwitter = (e) => {
+    setTwitterSelected(!isTwitterSelected);
+    console.log("Twitter selected: " + isTwitterSelected);
+  }
+
+  const handleChangeFacebook = (e) => {
+    setFacebookSelected(!isFacebookSelected);
+    console.log("FB selected: " + isFacebookSelected);
+  }
+
   const handleClickStart = (e) => {
     e.preventDefault();
     setIsOpenStart(!isOpenStart);
@@ -34,6 +44,7 @@ function CreateTask() {
     e.preventDefault();
     setIsOpenEnd(!isOpenEnd);
   };
+
   return (
     <div>
         <Navbar/>
@@ -44,27 +55,28 @@ function CreateTask() {
             <TaskDetails array={metrics} arrayUpdater={setMetrics} label="Metric"/>
           </div>
           <div className="CreateTask__Middle">
+            <WebsiteCheckbox 
+              handleChangeTwitter={handleChangeTwitter} 
+              handleChangeFB={handleChangeFacebook}
+              isTwitterSelected={isTwitterSelected}
+              isFacebookSelected={isFacebookSelected}/>
             <div className="CreateTask__DatePicker">
-              <div className='CreateTask__label'>
-                <label>Start Date</label>
-              </div>
               <DatePickerComponent 
                 handleClick={handleClickStart} 
                 date={startDate} 
                 setDate={setStartDate} 
                 isOpen={isOpenStart}
-                setIsOpen={setIsOpenStart}/>
+                setIsOpen={setIsOpenStart}
+                label="Start Date"/>
             </div>
             <div className="CreateTask__DatePicker">
-              <div className='CreateTask__label'>
-                <label>End Date</label>
-              </div>
               <DatePickerComponent 
                 handleClick={handleClickEnd} 
                 date={endDate} 
                 setDate={setEndDate} 
                 isOpen={isOpenEnd}
-                setIsOpen={setIsOpenEnd}/>
+                setIsOpen={setIsOpenEnd}
+                label="End Date"/>
             </div>
           </div>
         </div>

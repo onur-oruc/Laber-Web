@@ -1,14 +1,18 @@
-import React from 'react'
+import {React} from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import format from "date-fns/format"
 import { setHours, setMinutes } from 'date-fns'
 
+
 //https://reactdatepicker.com/
 
-function DatePickerComponent({handleClick, date, setDate, isOpen, setIsOpen}) {
+function DatePickerComponent({handleClick, date, setDate, isOpen, setIsOpen, label}) {
   return (
     <div>
+      <div className='CreateTask__label'>
+        <label>{label}</label>
+      </div>
       <button className="CreateTask_CustomPicker" onClick={handleClick}>
         {format(date, "dd-MM-yyyy h:mm aa")}
       </button>
