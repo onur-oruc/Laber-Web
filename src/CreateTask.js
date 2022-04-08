@@ -8,6 +8,10 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { setHours, setMinutes } from 'date-fns'
 import DatePickerComponent from './components/DatePickerComponent'
 import WebsiteCheckbox from './components/WebsiteCheckbox'
+import ExpertPreferences from './components/ExpertPreferences'
+import GenderRadioButton from './components/GenderRadioButton'
+import LanguageSelection from './components/LanguageSelection'
+import UploadData from './components/UploadData'
 
 function CreateTask() {
   const [keywords, updateKeyword] = useState([]);
@@ -17,9 +21,12 @@ function CreateTask() {
   const [endDate, setEndDate] = useState(new Date());
   const [isOpenStart, setIsOpenStart] = useState(false);
   const [isOpenEnd, setIsOpenEnd] = useState(false);
-  const [isTwitterSelected, setTwitterSelected] = useState(true);
-  const [isFacebookSelected, setFacebookSelected] = useState(true);
-  
+  const [isTwitterSelected, setTwitterSelected] = useState(false);
+  const [isFacebookSelected, setFacebookSelected] = useState(false);
+  const [minAge, setMinAge] = useState();
+  const [maxAge, setMaxAge] = useState();
+  const [gender, setGender] = useState('');
+
   const deneme = () => {
     axios.get('http://192.168.1.171:5000/fetch_tweets/'+ keywords[0]).then(response => {
       console.log(response.data);
@@ -44,7 +51,10 @@ function CreateTask() {
     e.preventDefault();
     setIsOpenEnd(!isOpenEnd);
   };
-
+  
+  useEffect(() => {
+    console.log("gender: " + gender);
+  }, [gender])
   return (
     <div>
         <Navbar/>
@@ -61,6 +71,9 @@ function CreateTask() {
               isTwitterSelected={isTwitterSelected}
               isFacebookSelected={isFacebookSelected}/>
             <div className="CreateTask__DatePicker">
+              <div className="CreateTask">
+                <label>Select a Time Interval</label>
+              </div>
               <DatePickerComponent 
                 handleClick={handleClickStart} 
                 date={startDate} 
@@ -79,8 +92,30 @@ function CreateTask() {
                 label="End Date"/>
             </div>
           </div>
+          <div className="CreateTask__Preferences">
+            <ExpertPreferences 
+              minAge={minAge} 
+              setMinAge={setMinAge}
+              maxAge={maxAge}
+              setMaxAge={setMaxAge}/>
+            <div style={{ color: 'blue', lineHeight : 10, marginTop: 50 }}> 
+              <GenderRadioButton value={gender} setGender={setGender} />
+            </div>
+            <div style={{ color: 'blue', marginTop: 25 }}> 
+              <LanguageSelection />
+            </div>
+          </div>
         </div>
-        <Button onClick={deneme}>Create</Button>
+        <div className='CreateTask__TopButtons'>
+          <div className='CreateTask__UploadButton'>
+            <UploadData/> 
+          </div>
+          <div className='CreateTask__SubmitButton'>
+            <Button variant='contained' color='success'>
+              Create Task
+            </Button>
+          </div>
+        </div>
     </div>
   )
 }

@@ -36,6 +36,7 @@
 
 .CreateTask {
 	display: flex;
+	justify-content: space-between;
 }
 
 .CreateTask__label {
@@ -56,4 +57,40 @@
 
 .WebsiteCheckbox {
 	margin-bottom: 50px;
+}
+
+.CreateTask > label {
+	margin-left: 8px;
+	font-family: 'Times New Roman', Times, serif;
+	font-size: 17px;
+	color: red;
+}
+
+
+.CreateTask__Preferences {
+	margin: 5% 15% 1% 15%;
+}
+
+.CreateTask__TopButtons {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	text-align: center;
+	width: 100%;
+	margin: auto;
+	margin-bottom: 80px;
+	width: 70%;
+}
+
+.CreateTask__SubmitButton {
+	margin-top: 25px;
+	flex-direction: column;
+	/* margin-left: 47%; */
+	justify-content: center;
+}
+
+.CreateTask__UploadButton {
+	border: 1px dashed green;
+	padding-bottom: 15px;
+	width: 400px;
 }
