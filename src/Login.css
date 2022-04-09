@@ -1,0 +1,179 @@
+.loginScreen {
+	max-width: 300px;
+	padding: 40px 70px 65px 70px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 5%;
+	background: rgba(0, 0, 0, 0.75);
+}
+
+.loginScreen > form > h1 {
+	text-align: left;
+	margin-bottom: 25px;
+	color: white;
+}
+
+.loginScreen > form {
+	display: grid;
+	flex-direction: column;
+	margin-bottom: 65px;
+}
+
+.loginScreen > form > input {
+	outline-width: 0;
+	height: 40px;
+	margin-bottom: 14px;
+	border-radius: 5px;
+	border: none;
+	padding: 5px 15px;
+	color: white;
+	background: #333;
+}
+
+.loginScreen > form > input:focus {
+	color: white;
+	font-size: 16px;
+}
+
+.loginScreen > form > button {
+	padding: 16px 20px;
+	font-size: 1rem;
+	color: #fff;
+	border-radius: 5px;
+	background-color: #9409e5;
+	font-weight: 600;
+	border: none;
+	cursor: pointer;
+	margin-top: 20px;
+}
+
+.support {
+	display: flex;
+	color: #b3b3b3;
+	justify-content: space-between;
+	font-size: 12px;
+}
+
+.support > input {
+	width: 15px;
+	height: 15px;
+}
+
+.remember {
+	display: flex;
+	align-items: center;
+	margin-bottom: 5px;
+	font-size: 13px;
+}
+
+.remember > span {
+	margin-right: 1px;
+	height: 25px;
+}
+
+.login__facebook {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	color: #737373;
+	padding-bottom: 10px;
+}
+
+.login__facebook img {
+	width: 20px;
+	height: 20px;
+}
+
+.login__facebook span {
+	margin-right: 10px;
+	font-size: 13px;
+}
+
+.login__facebook span a {
+	text-decoration: none;
+	color: #737373;
+}
+
+.sign__up {
+	color: #737373;
+	font-size: 16px;
+}
+
+.sign__up a {
+	color: #fff;
+	font-size: 16px;
+	text-decoration: none;
+}
+
+.signin_button {
+	margin-bottom: 10px;
+}
+
+.signup_button {
+    
+}
+
+.terms {
+	color: #8c8c8c;
+	font-size: 13px;
+}
+
+.terms a {
+	text-decoration: none;
+	color: #0071eb;
+}
+
+.terms a:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.login__facebook span a {
+	text-decoration: none;
+	color: #737373;
+}
+
+.loginScreen__gray {
+	color: #737373;
+}
+
+.loginScreen__help {
+	color: #737373;
+	font-size: 13px;
+}
+
+.loginScreen__help:hover {
+	color: #737373;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.loginScreen__link {
+	color: white;
+	text-decoration: none;
+}
+
+.loginScreen__link:hover {
+	color: white;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.nav_logo {
+	margin-top: 20px;
+	margin-left: 50px;
+}
+
+.login__background {
+	position: relative;
+	height: 100%;
+	background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('./assets/background.jpg') center no-repeat;
+	background-size: cover;
+}
+
+.loginScreen__gradient {
+	width: 100%;
+	z-index: 1;
+	height: 35vh;
+}
