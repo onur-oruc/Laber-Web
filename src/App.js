@@ -10,6 +10,7 @@ import CreateTask from './CreateTask';
 /**
  * login page
  */
+
 function App() { 
   return (
     <Router>
@@ -20,7 +21,6 @@ function App() {
         <Route exact path="/Account" element={<Account/>}/>
         <Route exact path="/CreateTask" element={<CreateTask/>}/>
         <Route exact path="/Payment" element={<Payment/>}/>
-        <Route path="/" element={<Login/>}/>
       </Routes>
     </Router>
   );
