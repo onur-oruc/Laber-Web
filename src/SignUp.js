@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import './Login.css';
 import Footer from './components/Footer';
 import axios from 'axios';
-import history from './history';
+
 
 function Login() {
     const[email, setEmail] = useState("");
@@ -32,7 +32,6 @@ function Login() {
                         if (response.data.message === "success") {
                           console.log("2")     
                           alert("your a be created");
-                          history.replace("/Analysis");
                         } else if (response.data.message === "failed") {
                           console.log("3")
                             alert("your account could not be created");

@@ -16,8 +16,8 @@ function Login() {
     const[isDataOk, setIsDataOk] = useState(false);
     let navigate = useNavigate();
 
-    function signIn() {
-      axios.post('http://192.168.1.171:5000/get_customer', {email: email, password: password})
+    const signIn = async () => {
+      await axios.get('http://139.179.129.117:5000/get_customer/' + email + "/" +password)
         .then(response => {
               alert("response.data: " + response.data);
               if (response.data === null) {
@@ -25,14 +25,8 @@ function Login() {
               }
               else if (response.data)
               {
-                navigate("/Analysis");
-                alert(" setIsDataOk(true);")
-                setIsDataOk(true);
-                setIsLoggedIn(true);
-                if(isDataOk) {
-                  alert("setIsDataOk === true")
-                  setIsLoggedIn(true);
-                }
+                alert("by by");
+
               }
             }
         ).catch(function (error) {
@@ -40,14 +34,6 @@ function Login() {
         });
     }
     
-    useEffect(() => {
-      alert(isLoggedIn);
-      alert("isDataOk: " + isDataOk )
-      if (isLoggedIn) {
-        alert("in isloggedin useeffect");
-        navigate("Analysis", {replace: true});
-      }
-    }, [isLoggedIn])
 
     return (
         <div>
@@ -78,6 +64,7 @@ function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}/>
                 <button id="signin_button" className="signin_button" type="submit" onClick={signIn}>Sign In</button>
+                <button id="signin_button" className="signin_button" type="submit" onClick={()=>navigate("/Analysis")}>Sign In</button>
                 
                 <div className="support">
                     <div className="need__help">
