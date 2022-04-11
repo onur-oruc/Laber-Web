@@ -2,7 +2,7 @@ import {useState}from'react';
 import ReactLanguageSelect from "react-languages-select";
 
 //import css module
-import "react-languages-select/css/react-languages-select.css";
+// import "react-languages-select/css/react-languages-select.css";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 
 export default function LanguageSelection() {
