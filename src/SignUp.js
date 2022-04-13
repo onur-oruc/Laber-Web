@@ -94,8 +94,13 @@ function SignUp() {
                   onChange={(e) => setPhone(e.target.value)}/>
                 <button id="signup_button" className="signup_button" type="submit" onClick={signUp}>Sign up</button>
               </form>
+              <div className="login__footer">
+                <div className="sign_up">
+                  <span className="loginScreen__gray">Already have an account? </span>
+                  <span className="loginScreen__link"><a id="signup_now" className="loginScreen__link" href="/">Sign in.</a></span>
+                </div>
+              </div> 
             </div>
-            
             <div className="loginScreen__gradient"/>
           </div>)}
           </div>

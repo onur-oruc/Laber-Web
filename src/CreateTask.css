@@ -19,6 +19,22 @@
 	margin-bottom: 50px;
 }
 
+.LanguageSection__Box {
+
+	border: 1px solid lightgray;
+	overflow-y: scroll;
+	width: 250px;
+	height: 100px;
+	margin-top: 10px;
+}
+
+.LanguageSection__div {
+	display: flex;
+	flex-direction: column;
+	width: 200px;
+	margin-bottom: 50px;
+}
+
 
 .CreateTask__Keywords {
 	margin: 5% 15% 1% 15%;

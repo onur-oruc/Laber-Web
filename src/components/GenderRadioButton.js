@@ -5,34 +5,47 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import Box from '@mui/material/Box';
+import FormGroup from '@mui/material/FormGroup';
+import Checkbox from '@mui/material/Checkbox';
 
 
-function GenderRadioButton({value, setGender}) {
-    const [value3, setValue] = useState('');
-    useEffect(() => {
-        console.log("gender inside GenderRadioButton: " + value3);
-    }, [value3])
+function GenderRadioButton({ isFemale,
+  setIsFemale,
+  isMale,
+  setIsMale,
+  isTransgender,
+  setIsTransgender,
+  isGenderNeutral,
+  setIsGenderNeutral,
+  isNonBinary,
+  setIsNonBinary,
+  isAny,
+  setIsAny}) {
+
+  useEffect(() => {
+
+  }, [isFemale, isMale, isTransgender, isGenderNeutral, isNonBinary, isAny])
   return (
-    <FormControl>
-      <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
-      <RadioGroup
-        aria-labelledby="demo-radio-buttons-group-label"
-        defaultValue="female"
-        name="radio-buttons-group"
-        value={value}
-        onChange={(event) => {
-            setGender(event.target.value);
-        }}
-      >
-        <FormControlLabel value="female" control={<Radio />} label="Female" />
-        <FormControlLabel value="male" control={<Radio />} label="Male" />
-        <FormControlLabel value="transgender" control={<Radio />} label="Transgender" />
-        <FormControlLabel value="gender neutral" control={<Radio />} label="Gender Neutral" />
-        <FormControlLabel value="non-binary" control={<Radio />} label="Non-binary" />
-        <FormControlLabel value="other" control={<Radio />} label="Other" />
-        <FormControlLabel value="any" control={<Radio />} label="Any" />
-      </RadioGroup>
+    <>
+    <Box sx={{ display: 'flex' }}>
+        <FormControl 
+        required
+        component="fieldset"
+        sx={{ m: 3 }}
+        variant="standard">
+      <FormLabel component="legend">Select a Gender(s)</FormLabel>
+      <FormGroup className='WebsiteCheckbox'>
+          <FormControlLabel onChange={() => setIsFemale(!isFemale) } control={<Checkbox />} label="Female" />
+          <FormControlLabel onChange={() => setIsMale(!isMale)} control={<Checkbox />} label="Male" />
+          <FormControlLabel onChange={() => setIsTransgender(!isTransgender)} control={<Checkbox />} label="Transgender" />
+          <FormControlLabel onChange={() => setIsGenderNeutral(!isGenderNeutral)} control={<Checkbox />} label="Gender Neutral" />
+          <FormControlLabel onChange={() => setIsNonBinary(!isNonBinary)} control={<Checkbox />} label="Non-binary" />
+          <FormControlLabel onChange={() => setIsAny(!isAny)} control={<Checkbox />} label="Any" />
+      </FormGroup>
     </FormControl>
+    </Box>
+    </>
   )
 }
 

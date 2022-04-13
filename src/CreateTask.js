@@ -12,6 +12,7 @@ import ExpertPreferences from './components/ExpertPreferences'
 import GenderRadioButton from './components/GenderRadioButton'
 import LanguageSelection from './components/LanguageSelection'
 import UploadData from './components/UploadData'
+import TextField from '@material-ui/core/TextField'
 
 function CreateTask() {
   const [keywords, updateKeyword] = useState([]);
@@ -25,7 +26,15 @@ function CreateTask() {
   const [isFacebookSelected, setFacebookSelected] = useState(false);
   const [minAge, setMinAge] = useState();
   const [maxAge, setMaxAge] = useState();
-  const [gender, setGender] = useState('');
+  const [languages, setLanguages] = useState([]);
+  const [taskName, setTaskName] = useState('');
+  
+  const [isFemale, setIsFemale] = useState(false);
+  const [isMale, setIsMale] = useState(false);
+  const [isTransgender, setIsTransgender] = useState(false);
+  const [isGenderNeutral, setIsGenderNeutral] = useState(false);
+  const [isNonBinary, setIsNonBinary] = useState(false);
+  const [isAny, setIsAny] = useState(false);
 
   const deneme = () => {
     axios.get('http://192.168.1.171:5000/fetch_tweets/'+ keywords[0]).then(response => {
@@ -53,8 +62,14 @@ function CreateTask() {
   };
   
   useEffect(() => {
-    console.log("gender: " + gender);
-  }, [gender])
+    console.log("Female: " + isFemale);
+    console.log("Male: " + isMale);
+    console.log("Transgender: " + isTransgender);
+    console.log("Gender Neutral: " + isGenderNeutral);
+    console.log("Non Binary: " + isNonBinary);
+    console.log("Any: " + isAny);
+  }, [isFemale, isMale, isTransgender, isGenderNeutral, isNonBinary, isAny])
+  
   return (
     <div>
         <Navbar/>
@@ -65,6 +80,12 @@ function CreateTask() {
             <TaskDetails array={metrics} arrayUpdater={setMetrics} label="Metric"/>
           </div>
           <div className="CreateTask__Middle">
+          <TextField style={{ width: 185}}
+                id="outlined-basic" 
+                label={"Task Name"}
+                variant="outlined"
+                onChange={(e) => setTaskName(e.target.value)}
+            />
             <WebsiteCheckbox 
               handleChangeTwitter={handleChangeTwitter} 
               handleChangeFB={handleChangeFacebook}
@@ -99,10 +120,23 @@ function CreateTask() {
               maxAge={maxAge}
               setMaxAge={setMaxAge}/>
             <div style={{ color: 'blue', lineHeight : 10, marginTop: 50 }}> 
-              <GenderRadioButton value={gender} setGender={setGender} />
+              <GenderRadioButton 
+                isFemale={isFemale} 
+                setIsFemale={setIsFemale}
+                isMale={isMale}
+                setIsMale={setIsMale}
+                isTransgender={isTransgender}
+                setIsTransgender={setIsTransgender}
+                isGenderNeutral={isGenderNeutral}
+                setIsGenderNeutral={setIsGenderNeutral}
+                isNonBinary={isNonBinary}
+                setIsNonBinary={setIsNonBinary}
+                isAny={isAny}
+                setIsAny={setIsAny}
+                 />
             </div>
             <div style={{ color: 'blue', marginTop: 25 }}> 
-              <LanguageSelection />
+              <LanguageSelection array={languages} arrayUpdater={setLanguages} />
             </div>
           </div>
         </div>
