@@ -3,9 +3,10 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import './Login.css';
 import Footer from './components/Footer';
-import axios from 'axios';
+import axios from './api/axios';
+import Login from './Login';
 
-function Login() {
+function SignUp() {
     const[email, setEmail] = useState("");
     const[phone, setPhone] = useState('');
     const[password, setPassword] = useState("");
@@ -13,37 +14,33 @@ function Login() {
     const[fullname, setFullname] = useState('');
     const[username, setUsername] = useState('');
     const[isSignedUp, setIsSignedUp] = useState(false);
-
-    let navigate = useNavigate();
-
-    function signUp() {
+    
+    const signUp = async (e) => {
+      e.preventDefault();
       console.log("in signUp");
-      axios.post('http://192.168.1.171:5000/add_customer', {
-                email: email,
-                name: fullname,
-                username: username,
-                phone: phone,
-                password: password,
-                companyName: companyName
-            }).then(response => {
-              console.log(response.data);
-                        console.log("1")
-                        if (response.data.message === "success") {
-                          console.log("2")     
-                          alert("your a be created");
-                          navigate("/Analysis");
-                        } else if (response.data.message === "failed") {
-                          console.log("3")
-                            alert("your account could not be created");
-                        }
-                    }
-                ).catch(function (error) {
-                  console.log(error);
-                });
+      try {
+        const response = await axios.post('/add_customer', {
+            email: email,
+            name: fullname,
+            username: username,
+            phone: phone,
+            password: password,
+            companyName: companyName
+        })
+        if (response.data.message === "success") {
+          alert ("Signed up successfully");
+          setIsSignedUp(true);
+        } else if (response.data.message === "failed") {
+          alert ("Sign up failed! Check your email and/or password");
+          setIsSignedUp(false);
+        }
+      } catch(error) {
+        alert("No Server Response");
+      }
     }
     return (
         <div>
-          <div className="login__background">
+          {isSignedUp ? <Login/> : (<div className="login__background">
             <div className="nav_contents">
               <a href="#">
                 <img
@@ -100,9 +97,9 @@ function Login() {
             </div>
             
             <div className="loginScreen__gradient"/>
-          </div>
+          </div>)}
           </div>
     )
 }
 
-export default Login
+export default SignUp
