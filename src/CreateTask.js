@@ -13,11 +13,15 @@ import GenderRadioButton from './components/GenderRadioButton'
 import LanguageSelection from './components/LanguageSelection'
 import UploadData from './components/UploadData'
 import TextField from '@material-ui/core/TextField'
+import Metric from './components/Metric'
+
 
 function CreateTask() {
   const [keywords, updateKeyword] = useState([]);
   const [hashtags, setHastags] = useState([]);
-  const [metrics, setMetrics] = useState([]);
+  const [scalarMetrics, setScalarMetrics] = useState([]);
+  const [nonScalarMetrics, setNonScalarMetrics] = useState([]);
+  const [numMetrics, setNumMetrics] = useState(0);
   const [startDate, setStartDate] = useState(setHours(setMinutes(new Date(), 30), 16));
   const [endDate, setEndDate] = useState(new Date());
   const [isOpenStart, setIsOpenStart] = useState(false);
@@ -28,7 +32,6 @@ function CreateTask() {
   const [maxAge, setMaxAge] = useState();
   const [languages, setLanguages] = useState([]);
   const [taskName, setTaskName] = useState('');
-  
   const [isFemale, setIsFemale] = useState(false);
   const [isMale, setIsMale] = useState(false);
   const [isTransgender, setIsTransgender] = useState(false);
@@ -61,15 +64,15 @@ function CreateTask() {
     setIsOpenEnd(!isOpenEnd);
   };
   
-  useEffect(() => {
-    console.log("Female: " + isFemale);
-    console.log("Male: " + isMale);
-    console.log("Transgender: " + isTransgender);
-    console.log("Gender Neutral: " + isGenderNeutral);
-    console.log("Non Binary: " + isNonBinary);
-    console.log("Any: " + isAny);
-  }, [isFemale, isMale, isTransgender, isGenderNeutral, isNonBinary, isAny])
+  const displayNewMetricField = () => {
+    setNumMetrics(numMetrics + 1);
+  }
   
+  useEffect(() => {
+    console.log("scalar metrics: " + JSON.stringify(scalarMetrics));
+    console.log("non-scalar metrics: " + JSON.stringify(nonScalarMetrics));
+  }, [scalarMetrics, nonScalarMetrics])
+
   return (
     <div>
         <Navbar/>
@@ -77,7 +80,8 @@ function CreateTask() {
           <div className="CreateTask__Keywords">
             <TaskDetails array={keywords} arrayUpdater={updateKeyword} label="Keyword"/>
             <TaskDetails array={hashtags} arrayUpdater={setHastags} label="Hashtag"/>
-            <TaskDetails array={metrics} arrayUpdater={setMetrics} label="Metric"/>
+            <Metric scalarMetrics={scalarMetrics} setScalarMetrics={setScalarMetrics}
+                    nonScalarMetrics={nonScalarMetrics} setNonScalarMetrics={setNonScalarMetrics} />
           </div>
           <div className="CreateTask__Middle">
           <TextField style={{ width: 185}}
