@@ -21,10 +21,28 @@
 }
 
 
+.ScalarMetric__ScalarMetric {
+	border: 1px solid lightgray;
+	display: flex;
+	padding-top: 10px;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-content: flex-start;
+}
+
+.NonScalarMetric__NonScalarMetric {
+	border: 1px solid lightgray;
+	display: flex;
+	padding-top: 10px;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-content: flex-start;
+}
+
 .Metric__Box {
 	border: 1px solid lightgray;
 	width: 250px;
-	height: 400px;
+	height: 500px;
 	margin-top: 10px;
 }
 

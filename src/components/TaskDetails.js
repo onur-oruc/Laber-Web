@@ -22,7 +22,7 @@ function TaskDetails({array, arrayUpdater, label}) {
     useEffect(() => {
         console.log(array);
     }, [clicked, array])
-    return (
+    return (    
         <div className='CreateTask__div'>
             <TextField 
                 id="outlined-basic" 
