@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 function NonScalarMetric({name, keys, nonScalarMetrics, setNonScalarMetrics}) {
     const deleteNonScalar = () => {
         if (nonScalarMetrics) {
+            setNonScalarMetrics(nonScalarMetrics.filter(item => item.name !== name));
         }
     }
   return (

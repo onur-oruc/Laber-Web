@@ -5,8 +5,6 @@ import IconButton from '@mui/material/IconButton';
 
 function ScalarMetric({name, min, max, scalarMetrics, setScalarMetrics}) {
     const deleteScalar = () => {
-        console.log("inside deleteScalar")
-        console.log("scalar metrics: " + JSON.stringify(scalarMetrics));
         if (scalarMetrics) {
             console.log("inside deleteScalar in if")
             setScalarMetrics(scalarMetrics.filter(item => item.name !== name));

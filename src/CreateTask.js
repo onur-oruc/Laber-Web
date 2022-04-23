@@ -2,7 +2,6 @@ import { React, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import TaskDetails from './components/TaskDetails'
 import { useState } from 'react'
-import axios from "axios"
 import Button from '@mui/material/Button'
 import 'react-datepicker/dist/react-datepicker.css'
 import { setHours, setMinutes } from 'date-fns'
@@ -14,11 +13,21 @@ import LanguageSelection from './components/LanguageSelection'
 import UploadData from './components/UploadData'
 import TextField from '@material-ui/core/TextField'
 import Metric from './components/Metric'
+import MetricV2 from './components/MetricV2';
+import axios from './api/axios';
+import AuthContext from './context/AuthProvider';
 
 
 function CreateTask() {
   const [keywords, updateKeyword] = useState([]);
   const [hashtags, setHastags] = useState([]);
+  const [minSentiment, setMinSentiment] = useState();
+  const [maxSentiment, setMaxSentiment] = useState();
+  const [minSarcasm, setMinSarcasm] = useState();
+  const [maxSarcasm, setMaxSarcasm] = useState();
+  const [standMetric, setStandMetric] = useState([]);
+  const [isBot, setIsBot] = useState([])
+
   const [scalarMetrics, setScalarMetrics] = useState([]);
   const [nonScalarMetrics, setNonScalarMetrics] = useState([]);
   const [numMetrics, setNumMetrics] = useState(0);
@@ -68,6 +77,40 @@ function CreateTask() {
     setNumMetrics(numMetrics + 1);
   }
   
+  const createTask = async(e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('/add_task', 
+        {
+          taskName: taskName, 
+          keywords: keywords,
+          hashtags: hashtags,
+          sentimentMin:  minSentiment,
+          sentimentMax: maxSentiment,
+          sarcasmMax: maxSarcasm,
+          sarcasmMin: minSarcasm,
+          standMetric: standMetric,
+          isBot: isBot,
+          isTwitterSelected: isTwitterSelected,
+          isFacebookSelected: isFacebookSelected,
+          startDate: startDate,
+          endDate: endDate,
+          minAge: minAge,
+          maxAge: maxAge,
+          isFemale: isFemale,
+          isMale: isMale,
+          isTransgender: isTransgender,
+          isGenderNeutral: isGenderNeutral,
+          isNonBinary: isNonBinary,
+          isAny: isAny,
+          languages: languages
+        }
+      )
+    } catch (err) {
+      alert("No Server Response");
+    }
+  }
+
   useEffect(() => {
     console.log("scalar metrics: " + JSON.stringify(scalarMetrics));
     console.log("non-scalar metrics: " + JSON.stringify(nonScalarMetrics));
@@ -80,8 +123,21 @@ function CreateTask() {
           <div className="CreateTask__Keywords">
             <TaskDetails array={keywords} arrayUpdater={updateKeyword} label="Keyword"/>
             <TaskDetails array={hashtags} arrayUpdater={setHastags} label="Hashtag"/>
-            <Metric scalarMetrics={scalarMetrics} setScalarMetrics={setScalarMetrics}
-                    nonScalarMetrics={nonScalarMetrics} setNonScalarMetrics={setNonScalarMetrics} />
+            {/* <Metric scalarMetrics={scalarMetrics} setScalarMetrics={setScalarMetrics}
+                    nonScalarMetrics={nonScalarMetrics} setNonScalarMetrics={setNonScalarMetrics} /> */}
+            <MetricV2 
+              minSentiment={minSentiment} 
+              setMinSentiment={setMinSentiment} 
+              maxSentiment = {maxSentiment}
+              setMaxSentiment={setMaxSentiment}
+              minSarcasm={minSarcasm} 
+              setMinSarcasm={setMinSarcasm} 
+              maxSarcasm={maxSarcasm} 
+              setMaxSarcasm={setMaxSarcasm}
+              standMetric={standMetric}
+              setStandMetric={setStandMetric} 
+              isBot={isBot} 
+              setIsBot={setIsBot}/>
           </div>
           <div className="CreateTask__Middle">
           <TextField style={{ width: 185}}
@@ -149,7 +205,10 @@ function CreateTask() {
             <UploadData/> 
           </div>
           <div className='CreateTask__SubmitButton'>
-            <Button variant='contained' color='success'>
+            <Button 
+              variant='contained' 
+              color='success'
+              onClick={createTask}>
               Create Task
             </Button>
           </div>

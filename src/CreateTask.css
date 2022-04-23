@@ -41,9 +41,10 @@
 
 .Metric__Box {
 	border: 1px solid lightgray;
-	width: 250px;
+	width: 370px;
 	height: 500px;
 	margin-top: 10px;
+	overflow-y: scroll;
 }
 
 .Metric__MetricType {
