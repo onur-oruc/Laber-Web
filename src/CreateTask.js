@@ -82,15 +82,18 @@ function CreateTask() {
     try {
       const response = await axios.post('/add_task', 
         {
+          customerEmail: "adem0606@gmail.com",
           taskName: taskName, 
           keywords: keywords,
           hashtags: hashtags,
-          sentimentMin:  minSentiment,
-          sentimentMax: maxSentiment,
-          sarcasmMax: maxSarcasm,
-          sarcasmMin: minSarcasm,
-          standMetric: standMetric,
-          isBot: isBot,
+          // sentimentMin:  minSentiment,
+          // sentimentMax: maxSentiment,
+          // sarcasmMax: maxSarcasm,
+          // sarcasmMin: minSarcasm,
+          // standMetric: standMetric,
+          // isBot: isBot,
+          scalarMetrics: scalarMetrics,
+          nonScalarMetrics: nonScalarMetrics,
           isTwitterSelected: isTwitterSelected,
           isFacebookSelected: isFacebookSelected,
           startDate: startDate,
@@ -123,9 +126,9 @@ function CreateTask() {
           <div className="CreateTask__Keywords">
             <TaskDetails array={keywords} arrayUpdater={updateKeyword} label="Keyword"/>
             <TaskDetails array={hashtags} arrayUpdater={setHastags} label="Hashtag"/>
-            {/* <Metric scalarMetrics={scalarMetrics} setScalarMetrics={setScalarMetrics}
-                    nonScalarMetrics={nonScalarMetrics} setNonScalarMetrics={setNonScalarMetrics} /> */}
-            <MetricV2 
+            <Metric scalarMetrics={scalarMetrics} setScalarMetrics={setScalarMetrics}
+                    nonScalarMetrics={nonScalarMetrics} setNonScalarMetrics={setNonScalarMetrics} />
+            {/* <MetricV2 
               minSentiment={minSentiment} 
               setMinSentiment={setMinSentiment} 
               maxSentiment = {maxSentiment}
@@ -137,7 +140,7 @@ function CreateTask() {
               standMetric={standMetric}
               setStandMetric={setStandMetric} 
               isBot={isBot} 
-              setIsBot={setIsBot}/>
+              setIsBot={setIsBot}/> */}
           </div>
           <div className="CreateTask__Middle">
           <TextField style={{ width: 185}}
