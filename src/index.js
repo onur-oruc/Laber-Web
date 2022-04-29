@@ -5,7 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserHistory } from 'history';
 import { unstable_HistoryRouter as HistoryRouter, BrowserRouter as Router } from 'react-router-dom';
-import { AuthProvider } from './context/AuthProvider';
+// import { AuthProvider } from './context/AuthProvider';
+import {AuthProvider} from './context/AuthProvider';
 
 
 let history = createBrowserHistory();

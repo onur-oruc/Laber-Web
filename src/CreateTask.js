@@ -1,4 +1,4 @@
-import { React, useEffect } from 'react'
+import { React, useEffect, useContext } from 'react'
 import Navbar from './components/Navbar'
 import TaskDetails from './components/TaskDetails'
 import { useState } from 'react'
@@ -13,21 +13,13 @@ import LanguageSelection from './components/LanguageSelection'
 import UploadData from './components/UploadData'
 import TextField from '@material-ui/core/TextField'
 import Metric from './components/Metric'
-import MetricV2 from './components/MetricV2';
 import axios from './api/axios';
-import AuthContext from './context/AuthProvider';
+import {useAuth} from './context/AuthProvider'
 
 
 function CreateTask() {
   const [keywords, updateKeyword] = useState([]);
   const [hashtags, setHastags] = useState([]);
-  const [minSentiment, setMinSentiment] = useState();
-  const [maxSentiment, setMaxSentiment] = useState();
-  const [minSarcasm, setMinSarcasm] = useState();
-  const [maxSarcasm, setMaxSarcasm] = useState();
-  const [standMetric, setStandMetric] = useState([]);
-  const [isBot, setIsBot] = useState([])
-
   const [scalarMetrics, setScalarMetrics] = useState([]);
   const [nonScalarMetrics, setNonScalarMetrics] = useState([]);
   const [numMetrics, setNumMetrics] = useState(0);
@@ -47,12 +39,8 @@ function CreateTask() {
   const [isGenderNeutral, setIsGenderNeutral] = useState(false);
   const [isNonBinary, setIsNonBinary] = useState(false);
   const [isAny, setIsAny] = useState(false);
-
-  const deneme = () => {
-    axios.get('http://192.168.1.171:5000/fetch_tweets/'+ keywords[0]).then(response => {
-      console.log(response.data);
-    });
-  }
+  const [errMsg, setErrMsg] = useState('');
+  const {auth} = useAuth();
   
   const handleChangeTwitter = (e) => {
     setTwitterSelected(!isTwitterSelected);
@@ -82,7 +70,7 @@ function CreateTask() {
     try {
       const response = await axios.post('/add_task', 
         {
-          customerEmail: "adem0606@gmail.com",
+          customerEmail: auth.email,
           taskName: taskName, 
           keywords: keywords,
           hashtags: hashtags,
@@ -109,6 +97,13 @@ function CreateTask() {
           languages: languages
         }
       )
+      if (response.data !== null) {
+        alert('Please enter a unique task name');
+        setErrMsg("Please enter a unique task name");
+      }
+      else {
+        alert('Task has been successfuly created');
+      }
     } catch (err) {
       alert("No Server Response");
     }
@@ -118,6 +113,10 @@ function CreateTask() {
     console.log("scalar metrics: " + JSON.stringify(scalarMetrics));
     console.log("non-scalar metrics: " + JSON.stringify(nonScalarMetrics));
   }, [scalarMetrics, nonScalarMetrics])
+
+  useEffect(() => {
+    console.log("auth in CreateTask: ", auth);
+  }, [])
 
   return (
     <div>

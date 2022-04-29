@@ -1,0 +1,22 @@
+[] Open
+[@] Ongoing
+[x] checked
+[~] obsolete
+
+[@] Authentication + create task with the customer email
+[@] Access Token and roles inside login.js
+[@] Task name uniqueliği kontrol edilsin (hem backend hem frontend)
+[] Create Task tarihleri bugünden sonra olacak ve start date end date'ten sonra olacak
+[] keywordler aynı tweet içinde olmak zorunda mı?
+[] scrapper remove deleted tweets
+[@] there should be at least one metric while creating
+[] editing a created task
+[] customize Twitter scrapper by enabling the customer to use tweets with more than 100 likes, etc
+[] budget section in Create Task page 
+[] Authorization (JWT) token in backend
+[] Email and/or password formatı hatalı olduğunda REGISTER sayfasında uyarı ver.
+
+
+https://xit.jotaen.net/
+
+

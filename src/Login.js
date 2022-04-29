@@ -1,35 +1,62 @@
 import React from 'react';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import './Login.css';
 // import Footer from './components/Footer';
 import axios from './api/axios';
-import Analysis from './Analysis';
+import Analysis from './Analysis'; 
 import AuthContext from './context/AuthProvider';
 
 
 function Login() {
   const { setAuth } = useContext(AuthContext);
-
-  const[email, setEmail] = useState("");
-  const[password, setPassword] = useState("");
-  const[isLoggedIn, setIsLoggedIn] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [errMsg, setErrMsg] = useState('');
 
   const signIn = async(e) => {
     e.preventDefault();
     try {
       const response = await axios.post('/get_customer', 
-        {email: email, password: password})
-      
+        {email: email, password: password}
+        // ,{
+        //   headers: {"Access-Control-Allow-Origin": "*",
+        //   'Access-Control-Allow-Credentials':true}
+        // }
+        )
       if (response.data === null) {
         alert('email or password is wrong ');
       } else if (response.data) {
+        const accessToken = response?.data?.accessToken
+        const roles = response?.data?.roles;
+        console.log("email: ", email);
+        setAuth({email, password});
         setIsLoggedIn(true);
+        setEmail('');
+        setPassword('');
       }
     } catch (err) {
-      alert("No Server Response");
+      if (!err?.response) {
+        alert("No Server Response");
+      } else if (err.response?.status === 400) {
+        setErrMsg('Missing Username or Password');
+      } else if (err.response?.status === 401) {
+        setErrMsg('Unauthorized');
+      } else if (err.response?.status === 404) {
+        setErrMsg('User cannot be found');
+      } else {
+        setErrMsg('Login Failed');
+      }
     }
   }
 
+  // useEffect(() => { 
+  //   console.log("username: ", email);
+  //   console.log("pwd: ", password);
+
+  // }, [email, password]);
+
+   
   return (
     <div>
       {!isLoggedIn ? (<div className="login__background">
