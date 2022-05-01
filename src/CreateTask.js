@@ -15,6 +15,7 @@ import TextField from '@material-ui/core/TextField'
 import Metric from './components/Metric'
 import axios from './api/axios';
 import {useAuth} from './context/AuthProvider'
+// https://www.npmjs.com/package/react-toastify
 
 
 function CreateTask() {
@@ -74,12 +75,6 @@ function CreateTask() {
           taskName: taskName, 
           keywords: keywords,
           hashtags: hashtags,
-          // sentimentMin:  minSentiment,
-          // sentimentMax: maxSentiment,
-          // sarcasmMax: maxSarcasm,
-          // sarcasmMin: minSarcasm,
-          // standMetric: standMetric,
-          // isBot: isBot,
           scalarMetrics: scalarMetrics,
           nonScalarMetrics: nonScalarMetrics,
           isTwitterSelected: isTwitterSelected,
@@ -95,6 +90,12 @@ function CreateTask() {
           isNonBinary: isNonBinary,
           isAny: isAny,
           languages: languages
+        }, 
+        {
+          headers: {
+            // 'Authorization': "Bearer " + sessionStorage.getItem("access_token")
+            // 'Authorization': "Bearer " + auth.accessToken -> does NOT work after refresh
+          }
         }
       )
       if (response.data !== null) {
@@ -116,6 +117,7 @@ function CreateTask() {
 
   useEffect(() => {
     console.log("auth in CreateTask: ", auth);
+    console.log("auth.accessToken: ", auth.accessToken);
   }, [])
 
   return (

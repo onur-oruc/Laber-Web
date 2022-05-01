@@ -3,12 +3,12 @@ import { useState, useContext, useEffect } from 'react';
 import './Login.css';
 // import Footer from './components/Footer';
 import axios from './api/axios';
-import Analysis from './Analysis'; 
-import AuthContext from './context/AuthProvider';
+import Analysis from './Analysis';
+import {useAuth} from './context/AuthProvider'
 
 
 function Login() {
-  const { setAuth } = useContext(AuthContext);
+  const { auth, setAuth } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -27,10 +27,12 @@ function Login() {
       if (response.data === null) {
         alert('email or password is wrong ');
       } else if (response.data) {
-        const accessToken = response?.data?.accessToken
+        const accessToken = response?.data?.access_token
+        sessionStorage.setItem("access_token", accessToken);
+        sessionStorage.setItem("email", email);
         const roles = response?.data?.roles;
         console.log("email: ", email);
-        setAuth({email, password});
+        setAuth({email, password, accessToken});
         setIsLoggedIn(true);
         setEmail('');
         setPassword('');
