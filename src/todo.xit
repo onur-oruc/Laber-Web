@@ -4,6 +4,20 @@
 [~] obsolete
 
 [@] Authentication + create task with the customer email
+    1.0 methodlar çağırılmadan önce, gerektiği yerde, 
+            if (token && token != "" && token != undefined)
+        kontrolü yapılsın.
+    1. refresh edildikten sonra state'i tekrar storage'dan güncellemen
+        gerekiyor olabilir mi?
+    2. login yapmamış bir kullanıcı URL değiştirerek diğer sayfalara gidememeli:
+        useEffect içinde token'ı ve email'i kontrol et. Eğer bunlar bulunmuyorsa
+        login sayfasına yönlendir
+    3. Logout button:
+        clear sessionStorage
+        clear AuthContext
+        direct to the login page
+    4. Login yapıp içeriye girdiğinde, URL değiştirip tekrar login sayfasına gelirse,
+        doğrudan analiz kısmına yönlendirilmeli
 [@] Access Token and roles inside login.js
 [@] Task name uniqueliği kontrol edilsin (hem backend hem frontend)
 [] Create Task tarihleri bugünden sonra olacak ve start date end date'ten sonra olacak
@@ -15,6 +29,8 @@
 [] budget section in Create Task page 
 [] Authorization (JWT) token in backend
 [] Email and/or password formatı hatalı olduğunda REGISTER sayfasında uyarı ver.
+[] encrypt password
+[] test yaz
 
 
 https://xit.jotaen.net/
