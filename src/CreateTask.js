@@ -15,6 +15,8 @@ import TextField from '@material-ui/core/TextField'
 import Metric from './components/Metric'
 import axios from './api/axios';
 import {useAuth} from './context/AuthProvider'
+import Unauthorized from './components/Unauthorized'
+
 // https://www.npmjs.com/package/react-toastify
 
 
@@ -41,7 +43,7 @@ function CreateTask() {
   const [isNonBinary, setIsNonBinary] = useState(false);
   const [isAny, setIsAny] = useState(false);
   const [errMsg, setErrMsg] = useState('');
-  const {auth} = useAuth();
+  const {auth, setAuth} = useAuth();
   
   const handleChangeTwitter = (e) => {
     setTwitterSelected(!isTwitterSelected);
@@ -61,10 +63,7 @@ function CreateTask() {
     e.preventDefault();
     setIsOpenEnd(!isOpenEnd);
   };
-  
-  const displayNewMetricField = () => {
-    setNumMetrics(numMetrics + 1);
-  }
+
   
   const createTask = async(e) => {
     e.preventDefault();
@@ -93,7 +92,7 @@ function CreateTask() {
         }, 
         {
           headers: {
-            // 'Authorization': "Bearer " + sessionStorage.getItem("access_token")
+            'Authorization': "Bearer " + sessionStorage.getItem("access_token")
             // 'Authorization': "Bearer " + auth.accessToken -> does NOT work after refresh
           }
         }
@@ -115,108 +114,96 @@ function CreateTask() {
     console.log("non-scalar metrics: " + JSON.stringify(nonScalarMetrics));
   }, [scalarMetrics, nonScalarMetrics])
 
-  useEffect(() => {
-    console.log("auth in CreateTask: ", auth);
-    console.log("auth.accessToken: ", auth.accessToken);
-  }, [])
-
   return (
     <div>
-        <Navbar/>
-        <div className="CreateTask">
-          <div className="CreateTask__Keywords">
-            <TaskDetails array={keywords} arrayUpdater={updateKeyword} label="Keyword"/>
-            <TaskDetails array={hashtags} arrayUpdater={setHastags} label="Hashtag"/>
-            <Metric scalarMetrics={scalarMetrics} setScalarMetrics={setScalarMetrics}
-                    nonScalarMetrics={nonScalarMetrics} setNonScalarMetrics={setNonScalarMetrics} />
-            {/* <MetricV2 
-              minSentiment={minSentiment} 
-              setMinSentiment={setMinSentiment} 
-              maxSentiment = {maxSentiment}
-              setMaxSentiment={setMaxSentiment}
-              minSarcasm={minSarcasm} 
-              setMinSarcasm={setMinSarcasm} 
-              maxSarcasm={maxSarcasm} 
-              setMaxSarcasm={setMaxSarcasm}
-              standMetric={standMetric}
-              setStandMetric={setStandMetric} 
-              isBot={isBot} 
-              setIsBot={setIsBot}/> */}
-          </div>
-          <div className="CreateTask__Middle">
-          <TextField style={{ width: 185}}
-                id="outlined-basic" 
-                label={"Task Name"}
-                variant="outlined"
-                onChange={(e) => setTaskName(e.target.value)}
-            />
-            <WebsiteCheckbox 
-              handleChangeTwitter={handleChangeTwitter} 
-              handleChangeFB={handleChangeFacebook}
-              isTwitterSelected={isTwitterSelected}
-              isFacebookSelected={isFacebookSelected}/>
-            <div className="CreateTask__DatePicker">
-              <div className="CreateTask">
-                <label>Select a Time Interval</label>
+      { (sessionStorage.getItem("access_token") && sessionStorage.getItem("access_token") != "" && sessionStorage.getItem("access_token") != undefined) 
+      ?
+        (<div>
+            <Navbar/>
+            <div className="CreateTask">
+              <div className="CreateTask__Keywords">
+                <TaskDetails array={keywords} arrayUpdater={updateKeyword} label="Keyword"/>
+                <TaskDetails array={hashtags} arrayUpdater={setHastags} label="Hashtag"/>
+                <Metric scalarMetrics={scalarMetrics} setScalarMetrics={setScalarMetrics}
+                        nonScalarMetrics={nonScalarMetrics} setNonScalarMetrics={setNonScalarMetrics} />
               </div>
-              <DatePickerComponent 
-                handleClick={handleClickStart} 
-                date={startDate} 
-                setDate={setStartDate} 
-                isOpen={isOpenStart}
-                setIsOpen={setIsOpenStart}
-                label="Start Date"/>
+            <div className="CreateTask__Middle">
+            <TextField style={{ width: 185}}
+                  id="outlined-basic" 
+                  label={"Task Name"}
+                  variant="outlined"
+                  onChange={(e) => setTaskName(e.target.value)}
+              />
+              <WebsiteCheckbox 
+                handleChangeTwitter={handleChangeTwitter} 
+                handleChangeFB={handleChangeFacebook}
+                isTwitterSelected={isTwitterSelected}
+                isFacebookSelected={isFacebookSelected}/>
+              <div className="CreateTask__DatePicker">
+                <div className="CreateTask">
+                  <label>Select a Time Interval</label>
+                </div>
+                <DatePickerComponent 
+                  handleClick={handleClickStart} 
+                  date={startDate} 
+                  setDate={setStartDate} 
+                  isOpen={isOpenStart}
+                  setIsOpen={setIsOpenStart}
+                  label="Start Date"/>
+              </div>
+              <div className="CreateTask__DatePicker">
+                <DatePickerComponent 
+                  handleClick={handleClickEnd} 
+                  date={endDate} 
+                  setDate={setEndDate} 
+                  isOpen={isOpenEnd}
+                  setIsOpen={setIsOpenEnd}
+                  label="End Date"/>
+              </div>
             </div>
-            <div className="CreateTask__DatePicker">
-              <DatePickerComponent 
-                handleClick={handleClickEnd} 
-                date={endDate} 
-                setDate={setEndDate} 
-                isOpen={isOpenEnd}
-                setIsOpen={setIsOpenEnd}
-                label="End Date"/>
+            <div className="CreateTask__Preferences">
+              <ExpertPreferences 
+                minAge={minAge} 
+                setMinAge={setMinAge}
+                maxAge={maxAge}
+                setMaxAge={setMaxAge}/>
+              <div style={{ color: 'blue', lineHeight : 10, marginTop: 50 }}> 
+                <GenderRadioButton 
+                  isFemale={isFemale} 
+                  setIsFemale={setIsFemale}
+                  isMale={isMale}
+                  setIsMale={setIsMale}
+                  isTransgender={isTransgender}
+                  setIsTransgender={setIsTransgender}
+                  isGenderNeutral={isGenderNeutral}
+                  setIsGenderNeutral={setIsGenderNeutral}
+                  isNonBinary={isNonBinary}
+                  setIsNonBinary={setIsNonBinary}
+                  isAny={isAny}
+                  setIsAny={setIsAny}
+                  />
+              </div>
+              <div style={{ color: 'blue', marginTop: 25 }}> 
+                <LanguageSelection array={languages} arrayUpdater={setLanguages} />
+              </div>
             </div>
           </div>
-          <div className="CreateTask__Preferences">
-            <ExpertPreferences 
-              minAge={minAge} 
-              setMinAge={setMinAge}
-              maxAge={maxAge}
-              setMaxAge={setMaxAge}/>
-            <div style={{ color: 'blue', lineHeight : 10, marginTop: 50 }}> 
-              <GenderRadioButton 
-                isFemale={isFemale} 
-                setIsFemale={setIsFemale}
-                isMale={isMale}
-                setIsMale={setIsMale}
-                isTransgender={isTransgender}
-                setIsTransgender={setIsTransgender}
-                isGenderNeutral={isGenderNeutral}
-                setIsGenderNeutral={setIsGenderNeutral}
-                isNonBinary={isNonBinary}
-                setIsNonBinary={setIsNonBinary}
-                isAny={isAny}
-                setIsAny={setIsAny}
-                 />
+          <div className='CreateTask__TopButtons'>
+            <div className='CreateTask__UploadButton'>
+              <UploadData/> 
             </div>
-            <div style={{ color: 'blue', marginTop: 25 }}> 
-              <LanguageSelection array={languages} arrayUpdater={setLanguages} />
+            <div className='CreateTask__SubmitButton'>
+              <Button 
+                variant='contained' 
+                color='success'
+                onClick={createTask}>
+                Create Task
+              </Button>
             </div>
-          </div>
-        </div>
-        <div className='CreateTask__TopButtons'>
-          <div className='CreateTask__UploadButton'>
-            <UploadData/> 
-          </div>
-          <div className='CreateTask__SubmitButton'>
-            <Button 
-              variant='contained' 
-              color='success'
-              onClick={createTask}>
-              Create Task
-            </Button>
-          </div>
-        </div>
+          </div> 
+        </div>) 
+      : 
+        (<Unauthorized/>)}
     </div>
   )
 }

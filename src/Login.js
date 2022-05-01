@@ -5,6 +5,7 @@ import './Login.css';
 import axios from './api/axios';
 import Analysis from './Analysis';
 import {useAuth} from './context/AuthProvider'
+import {useNavigate} from 'react-router-dom'
 
 
 function Login() {
@@ -13,7 +14,10 @@ function Login() {
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [errMsg, setErrMsg] = useState('');
-
+  const [token, setToken] = useState('');
+  const {aEmail, aPass, aToken} = {auth};
+  let navigate = useNavigate();
+  
   const signIn = async(e) => {
     e.preventDefault();
     try {
@@ -52,60 +56,67 @@ function Login() {
     }
   }
 
-  // useEffect(() => { 
-  //   console.log("username: ", email);
-  //   console.log("pwd: ", password);
-
-  // }, [email, password]);
+  useEffect(() => { 
+    if (sessionStorage.getItem("access_token")) { // in presence of valid access token
+      navigate('/Analysis');
+    } else {
+      navigate("/");
+    } 
+  }, []);
 
    
   return (
     <div>
-      {!isLoggedIn ? (<div className="login__background">
-        <div className="nav_contents">
-          <a href="#">
-            <img
-              className="nav_logo"
-              src={""}
-              alt=""
-            />
-          </a>
-        </div>
-        <div className="loginScreen">
-          <form> 
-            <h1>Sign In</h1>
-            <input 
-              autoFocus
-              id="email" 
-              placeholder='Email' 
-              type="email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}/>
-            <input 
-              id="password" 
-              placeholder='Password' 
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}/>
-            <button id="signin_button" className="signin_button" type="submit" onClick={signIn}>Sign In</button>
-            
-            <div className="support">
-              <div className="need__help">
-                <span className="loginScreen__help">Need help?</span>
-                <br/><br/>
+      {
+        !isLoggedIn 
+        ? 
+          (<div className="login__background">
+          <div className="nav_contents">
+            <a href="#">
+              <img
+                className="nav_logo"
+                src={""}
+                alt=""
+              />
+            </a>
+          </div>
+          <div className="loginScreen">
+            <form> 
+              <h1>Sign In</h1>
+              <input 
+                autoFocus
+                id="email" 
+                placeholder='Email' 
+                type="email" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}/>
+              <input 
+                id="password" 
+                placeholder='Password' 
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}/>
+              <button id="signin_button" className="signin_button" type="submit" onClick={signIn}>Sign In</button>
+              
+              <div className="support">
+                <div className="need__help">
+                  <span className="loginScreen__help">Need help?</span>
+                  <br/><br/>
+                </div>
               </div>
-            </div>
-                  
-            <div className="login__footer">
-              <div className="sign_up">
-                <span className="loginScreen__gray">Don't have an account? </span>
-                <span className="loginScreen__link"><a id="signup_now" className="loginScreen__link" href="/SignUp">Sign up.</a></span>
-              </div>
-            </div> 
-          </form>
-        </div>
-        <div className="loginScreen__gradient"/>
-      </div>) : <Analysis/>}  
+                    
+              <div className="login__footer">
+                <div className="sign_up">
+                  <span className="loginScreen__gray">Don't have an account? </span>
+                  <span className="loginScreen__link"><a id="signup_now" className="loginScreen__link" href="/SignUp">Sign up.</a></span>
+                </div>
+              </div> 
+            </form>
+          </div>
+          <div className="loginScreen__gradient"/>
+          </div>) 
+        : 
+         <Analysis/>}  
     </div>
   )
 }

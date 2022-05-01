@@ -1,13 +1,19 @@
 import React from 'react'
 import Navbar from './components/Navbar'
-
-<Navbar/> 
+import Unauthorized from './components/Unauthorized'
 
 function Account() {
   return (
     <div>
-        <Navbar/> 
-        Account
+        {
+          (sessionStorage.getItem("access_token") && sessionStorage.getItem("access_token") != "" && sessionStorage.getItem("access_token") != undefined) 
+          ?
+            (<div><Navbar/> 
+              Account
+            </div>) 
+          : 
+            (<Unauthorized/>)
+        }
     </div>
   )
 }
