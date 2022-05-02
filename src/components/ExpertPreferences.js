@@ -10,7 +10,7 @@ function ExpertPreferences({minAge, setMinAge, maxAge, setMaxAge}) {
         <div className='ExpertPreferences_Age'>
             <div className="input-container">
                 <input 
-                    type="text" 
+                    type="number" 
                     value={minAge} 
                     pattern="[0-9]*"
                     onChange={(e) => {
