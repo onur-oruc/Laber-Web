@@ -92,7 +92,7 @@ function Login() {
                 onChange={(e) => setEmail(e.target.value)}/>
               <input 
                 id="password" 
-                placeholder='Password' 
+                placeholder='Password deploy' 
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}/>
