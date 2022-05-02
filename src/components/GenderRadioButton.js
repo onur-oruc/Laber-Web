@@ -1,7 +1,4 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
@@ -19,13 +16,8 @@ function GenderRadioButton({ isFemale,
   isGenderNeutral,
   setIsGenderNeutral,
   isNonBinary,
-  setIsNonBinary,
-  isAny,
-  setIsAny}) {
+  setIsNonBinary}) {
 
-  useEffect(() => {
-
-  }, [isFemale, isMale, isTransgender, isGenderNeutral, isNonBinary, isAny])
   return (
     <>
     <Box sx={{ display: 'flex' }}>
@@ -41,7 +33,6 @@ function GenderRadioButton({ isFemale,
           <FormControlLabel onChange={() => setIsTransgender(!isTransgender)} control={<Checkbox />} label="Transgender" />
           <FormControlLabel onChange={() => setIsGenderNeutral(!isGenderNeutral)} control={<Checkbox />} label="Gender Neutral" />
           <FormControlLabel onChange={() => setIsNonBinary(!isNonBinary)} control={<Checkbox />} label="Non-binary" />
-          <FormControlLabel onChange={() => setIsAny(!isAny)} control={<Checkbox />} label="Any" />
       </FormGroup>
     </FormControl>
     </Box>

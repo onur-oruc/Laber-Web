@@ -12,6 +12,9 @@ import './ExpertPreferences.css'
 import Chip from '@mui/material/Chip';
 import ScalarMetric from './ScalarMetric';
 import NonScalarMetric from './NonScalarMetric'
+import { toastifyWarnOptions} from '../context/ToastifyOptions';
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 function Metric({scalarMetrics, setScalarMetrics, nonScalarMetrics, setNonScalarMetrics}) {
     const [metricType, setMetricType] = useState('');
@@ -33,21 +36,67 @@ function Metric({scalarMetrics, setScalarMetrics, nonScalarMetrics, setNonScalar
         console.log("metric: " + metricType);
     }, [metricType])
 
-    const addMetric = () => {
-        if (metricType === 'scalar') {
-            const scalarMetricObj = {name: metricName, min: minScalar, max:maxScalar}
-            setScalarMetrics(arr => [...arr, scalarMetricObj]);
-        } else if (metricType === 'non-scalar') {
-            const nonScalarMetricObj = {name: metricName, metricKeys: metricKeys}
-            setNonScalarMetrics(arr => [...arr, nonScalarMetricObj]);
+    const isScalarMetricValid = () => {
+        if (!metricName || metricName === undefined || metricName === '') {
+            toast.warn('🦄 Enter a metric name!', toastifyWarnOptions );
+            return false;
         }
-        // clear states
-        setMetricType('');
-        setMetricName('');
-        setMinScalar();
-        setMaxScalar();
-        setMetricKeys([]);
-        setNewMetricKey('');
+        if ( !minScalar || minScalar === undefined || minScalar === '') {
+            toast.warn('🦄 Specify the minimum value of the metric!', toastifyWarnOptions );
+            return false;
+        }
+        if ( !maxScalar || maxScalar === undefined || maxScalar === '') {
+            toast.warn('🦄 Specify the maximum value of the metric!', toastifyWarnOptions );
+            return false;
+        }
+        if ( minScalar < 0) {
+            toast.warn('🦄 Minimum value for the metric cannot be negative!', toastifyWarnOptions );
+            return false;
+        }
+        if ( minScalar > maxScalar) {
+            toast.warn('🦄 Minimum value for the metric cannot be bigger than maximum value!', toastifyWarnOptions );
+            return false;
+        }
+        return true;
+    }
+
+    const isNonScalarMetricValid = () => {
+        if (!metricName || metricName === undefined || metricName === '') {
+            toast.warn('🦄 Enter a metric name!', toastifyWarnOptions );
+            return false;
+        }
+        if(!metricKeys.length) {
+            toast.warn('🦄 Enter at least one metric key!', toastifyWarnOptions );
+            return false;
+        }
+
+        return true;
+    }
+
+    const addMetric = () => {
+        let executed = false;
+        if (metricType === 'scalar') {
+            if (isScalarMetricValid()) {
+                const scalarMetricObj = {name: metricName, min: minScalar, max:maxScalar}
+                setScalarMetrics(arr => [...arr, scalarMetricObj]);
+                executed = true;
+            }
+        } else if (metricType === 'non-scalar') {
+            if (isNonScalarMetricValid()) {
+                const nonScalarMetricObj = {name: metricName, metricKeys: metricKeys}
+                setNonScalarMetrics(arr => [...arr, nonScalarMetricObj]);
+                executed = true;
+            }
+        }
+        if (executed) {
+            // clear states
+            setMetricType('');
+            setMetricName('');
+            setMinScalar();
+            setMaxScalar();
+            setMetricKeys([]);
+            setNewMetricKey('');
+        }
     }
 
     return (
@@ -159,6 +208,7 @@ function Metric({scalarMetrics, setScalarMetrics, nonScalarMetrics, setNonScalar
                 ))
             }
             </div>
+            <ToastContainer />
         </div>
     )
 }

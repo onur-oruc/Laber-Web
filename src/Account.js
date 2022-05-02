@@ -6,7 +6,7 @@ function Account() {
   return (
     <div>
         {
-          (sessionStorage.getItem("access_token") && sessionStorage.getItem("access_token") != "" && sessionStorage.getItem("access_token") != undefined) 
+          (sessionStorage.getItem("access_token") && sessionStorage.getItem("access_token") !== "" && sessionStorage.getItem("access_token") !== undefined) 
           ?
             (<div><Navbar/> 
               Account

@@ -1,12 +1,14 @@
 import React from 'react';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './Login.css';
 // import Footer from './components/Footer';
 import axios from './api/axios';
 import Analysis from './Analysis';
 import {useAuth} from './context/AuthProvider'
 import {useNavigate} from 'react-router-dom'
-
+import { toastifyWarnOptions, toastifyErrOptions } from './context/ToastifyOptions';
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 function Login() {
   const { auth, setAuth } = useAuth();
@@ -14,8 +16,6 @@ function Login() {
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [errMsg, setErrMsg] = useState('');
-  const [token, setToken] = useState('');
-  const {aEmail, aPass, aToken} = {auth};
   let navigate = useNavigate();
   
   const signIn = async(e) => {
@@ -29,7 +29,7 @@ function Login() {
         // }
         )
       if (response.data === null) {
-        alert('email or password is wrong ');
+        toast.warn('🦄 Email and/or password is wrong !', toastifyWarnOptions );
       } else if (response.data) {
         const accessToken = response?.data?.access_token
         sessionStorage.setItem("access_token", accessToken);
@@ -45,11 +45,11 @@ function Login() {
       if (!err?.response) {
         alert("No Server Response");
       } else if (err.response?.status === 400) {
-        setErrMsg('Missing Username or Password');
+        toast.error('🦄 Missing Username or Password!', toastifyErrOptions );
       } else if (err.response?.status === 401) {
-        setErrMsg('Unauthorized');
+        toast.error('🦄 You are unauthorized to take this action', toastifyErrOptions );
       } else if (err.response?.status === 404) {
-        setErrMsg('User cannot be found');
+        toast.error('🦄 User cannot be found', toastifyErrOptions );
       } else {
         setErrMsg('Login Failed');
       }
@@ -114,6 +114,7 @@ function Login() {
             </form>
           </div>
           <div className="loginScreen__gradient"/>
+          <ToastContainer />
           </div>) 
         : 
          <Analysis/>}  

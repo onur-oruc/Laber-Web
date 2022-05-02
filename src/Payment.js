@@ -7,7 +7,7 @@ import Unauthorized from './components/Unauthorized'
 function Payment() {
   return (
     <div>
-       {(sessionStorage.getItem("access_token") && sessionStorage.getItem("access_token") != "" && sessionStorage.getItem("access_token") != undefined) ?
+       {(sessionStorage.getItem("access_token") && sessionStorage.getItem("access_token") !== "" && sessionStorage.getItem("access_token") !== undefined) ?
         (<div><Navbar/> 
           Payment
         </div>) : (<Unauthorized/>)}

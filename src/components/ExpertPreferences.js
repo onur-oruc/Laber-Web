@@ -1,7 +1,5 @@
 import React from 'react'
-import TextField from '@material-ui/core/TextField';
 import './ExpertPreferences.css'
-import GenderRadioButton from './GenderRadioButton';
 
 //https://codesandbox.io/s/floating-label-input-zveb7?from-embed=&file=/src/styles.css:395-1249
 function ExpertPreferences({minAge, setMinAge, maxAge, setMaxAge}) {

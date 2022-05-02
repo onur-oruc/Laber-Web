@@ -15,7 +15,11 @@ import TextField from '@material-ui/core/TextField'
 import Metric from './components/Metric'
 import axios from './api/axios';
 import {useAuth} from './context/AuthProvider'
+import { toastifyWarnOptions, toastifyErrOptions, toastifySuccessOptions } from './context/ToastifyOptions';
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 import Unauthorized from './components/Unauthorized'
+import {useNavigate} from 'react-router-dom'
 
 // https://www.npmjs.com/package/react-toastify
 
@@ -25,7 +29,6 @@ function CreateTask() {
   const [hashtags, setHastags] = useState([]);
   const [scalarMetrics, setScalarMetrics] = useState([]);
   const [nonScalarMetrics, setNonScalarMetrics] = useState([]);
-  const [numMetrics, setNumMetrics] = useState(0);
   const [startDate, setStartDate] = useState(setHours(setMinutes(new Date(), 30), 16));
   const [endDate, setEndDate] = useState(new Date());
   const [isOpenStart, setIsOpenStart] = useState(false);
@@ -41,10 +44,9 @@ function CreateTask() {
   const [isTransgender, setIsTransgender] = useState(false);
   const [isGenderNeutral, setIsGenderNeutral] = useState(false);
   const [isNonBinary, setIsNonBinary] = useState(false);
-  const [isAny, setIsAny] = useState(false);
-  const [errMsg, setErrMsg] = useState('');
   const {auth, setAuth} = useAuth();
-  
+  let navigate = useNavigate();
+
   const handleChangeTwitter = (e) => {
     setTwitterSelected(!isTwitterSelected);
     console.log("Twitter selected: " + isTwitterSelected);
@@ -64,48 +66,102 @@ function CreateTask() {
     setIsOpenEnd(!isOpenEnd);
   };
 
-  
+  const isDateInputsValid = () => {
+    let today = new Date();
+    if (startDate.getTime() > endDate.getTime()) {
+      toast.warn('🦄 End date cannot be before the start date!', toastifyWarnOptions );
+      return false;
+    }
+    return true;
+  }
+
+  const isRequiredFieldsFilled = () => {
+    if (!keywords.length && !hashtags.length) {
+      toast.warn('🦄 Enter at least one keyword/hashtag!', toastifyWarnOptions );
+      return false;
+    } 
+    if (!scalarMetrics.length && !nonScalarMetrics.length) {
+      toast.warn('🦄 Enter at least one scalar/non-scalar metric!', toastifyWarnOptions );
+      return false;
+    }
+    if (!taskName || taskName === undefined || taskName === '') {
+      toast.warn('🦄 Enter a task name!', toastifyWarnOptions );
+      return false;
+    }
+    if (!minAge || minAge === undefined || minAge === '') {
+      toast.warn('🦄 Specify the minimum age of experts!', toastifyWarnOptions );
+      return false;
+    }
+    if (!maxAge || maxAge === undefined || maxAge === '') {
+      toast.warn('🦄 Specify the maximum age of experts!', toastifyWarnOptions );
+      return false;
+    }
+    if (minAge < 18) {
+      toast.warn('🦄 Minimum age cannot be smaller than 18!', toastifyWarnOptions );
+      return false;
+    }
+    if (minAge > maxAge) {
+      toast.warn('🦄 Minimum age cannot be bigger than maximum age!', toastifyWarnOptions );
+      return false;
+    }
+    if (!isFemale && !isMale && !isTransgender && !isNonBinary && !isGenderNeutral) {
+      toast.warn('🦄 Select at least one gender!', toastifyWarnOptions );
+      return false;
+    }
+    if (!languages.length) {
+      toast.warn('🦄 Select at least one language!', toastifyWarnOptions );
+      return false;
+    }
+    return true
+  }
+
   const createTask = async(e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('/add_task', 
-        {
-          customerEmail: auth.email,
-          taskName: taskName, 
-          keywords: keywords,
-          hashtags: hashtags,
-          scalarMetrics: scalarMetrics,
-          nonScalarMetrics: nonScalarMetrics,
-          isTwitterSelected: isTwitterSelected,
-          isFacebookSelected: isFacebookSelected,
-          startDate: startDate,
-          endDate: endDate,
-          minAge: minAge,
-          maxAge: maxAge,
-          isFemale: isFemale,
-          isMale: isMale,
-          isTransgender: isTransgender,
-          isGenderNeutral: isGenderNeutral,
-          isNonBinary: isNonBinary,
-          isAny: isAny,
-          languages: languages
-        }, 
-        {
-          headers: {
-            'Authorization': "Bearer " + sessionStorage.getItem("access_token")
-            // 'Authorization': "Bearer " + auth.accessToken -> does NOT work after refresh
+    if (isRequiredFieldsFilled() && isDateInputsValid()) {
+      try {
+        const response = await axios.post('/add_task', 
+          {
+            customerEmail: auth.email,
+            taskName: taskName, 
+            keywords: keywords,
+            hashtags: hashtags,
+            scalarMetrics: scalarMetrics,
+            nonScalarMetrics: nonScalarMetrics,
+            isTwitterSelected: isTwitterSelected,
+            isFacebookSelected: isFacebookSelected,
+            startDate: startDate,
+            endDate: endDate,
+            minAge: minAge,
+            maxAge: maxAge,
+            isFemale: isFemale,
+            isMale: isMale,
+            isTransgender: isTransgender,
+            isGenderNeutral: isGenderNeutral,
+            isNonBinary: isNonBinary,
+            languages: languages
+          }, 
+          {
+            headers: {
+              'Authorization': "Bearer " + sessionStorage.getItem("access_token")
+              // 'Authorization': "Bearer " + auth.accessToken -> does NOT work after refresh
+            }
           }
+        )
+        if (response.data !== null) {
+          toast.error('🦄 Please enter a unique task name!', toastifyErrOptions );
         }
-      )
-      if (response.data !== null) {
-        alert('Please enter a unique task name');
-        setErrMsg("Please enter a unique task name");
+        else {
+          toast.success('🦄 The task has been successfully created!', toastifySuccessOptions );
+          // clear fields
+          
+        }
+      } catch (err) {
+        if (!err?.response) {
+          alert("No Server Response");
+        } else if (err.response?.status === 401) {
+          toast.error('🦄 You are unauthorized to take this action. Please login!', toastifyErrOptions );
+        }
       }
-      else {
-        alert('Task has been successfuly created');
-      }
-    } catch (err) {
-      alert("No Server Response");
     }
   }
 
@@ -116,7 +172,7 @@ function CreateTask() {
 
   return (
     <div>
-      { (sessionStorage.getItem("access_token") && sessionStorage.getItem("access_token") != "" && sessionStorage.getItem("access_token") != undefined) 
+      { (sessionStorage.getItem("access_token") && sessionStorage.getItem("access_token") !== "" && sessionStorage.getItem("access_token") !== undefined) 
       ?
         (<div>
             <Navbar/>
@@ -179,8 +235,6 @@ function CreateTask() {
                   setIsGenderNeutral={setIsGenderNeutral}
                   isNonBinary={isNonBinary}
                   setIsNonBinary={setIsNonBinary}
-                  isAny={isAny}
-                  setIsAny={setIsAny}
                   />
               </div>
               <div style={{ color: 'blue', marginTop: 25 }}> 
@@ -201,6 +255,7 @@ function CreateTask() {
               </Button>
             </div>
           </div> 
+          <ToastContainer />
         </div>) 
       : 
         (<Unauthorized/>)}
