@@ -3,7 +3,9 @@
 [x] checked
 [~] obsolete
 
-[@] Authentication + create task with the customer email
+
+[@] Bir tane landing page yapılsın. Hemen Sign In page güzel olmaz.
+[x] Authentication + create task with the customer email
     1.0 methodlar çağırılmadan önce, gerektiği yerde, 
             if (token && token != "" && token != undefined)
         kontrolü yapılsın.
