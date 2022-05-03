@@ -67,6 +67,7 @@ function Login() {
    
   return (
     <div>
+      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"></meta>
       {
         !isLoggedIn 
         ? 
@@ -92,7 +93,7 @@ function Login() {
                 onChange={(e) => setEmail(e.target.value)}/>
               <input 
                 id="password" 
-                placeholder='Password deploy' 
+                placeholder='Password deploy 2' 
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}/>
