@@ -19,9 +19,6 @@ import { toastifyWarnOptions, toastifyErrOptions, toastifySuccessOptions } from 
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import Unauthorized from './components/Unauthorized'
-import {useNavigate} from 'react-router-dom'
-
-// https://www.npmjs.com/package/react-toastify
 
 
 function CreateTask() {
@@ -45,7 +42,6 @@ function CreateTask() {
   const [isGenderNeutral, setIsGenderNeutral] = useState(false);
   const [isNonBinary, setIsNonBinary] = useState(false);
   const {auth, setAuth} = useAuth();
-  let navigate = useNavigate();
 
   const handleChangeTwitter = (e) => {
     setTwitterSelected(!isTwitterSelected);
@@ -67,7 +63,6 @@ function CreateTask() {
   };
 
   const isDateInputsValid = () => {
-    let today = new Date();
     if (startDate.getTime() > endDate.getTime()) {
       toast.warn('🦄 End date cannot be before the start date!', toastifyWarnOptions );
       return false;
@@ -157,9 +152,11 @@ function CreateTask() {
         }
       } catch (err) {
         if (!err?.response) {
-          alert("No Server Response");
+          toast.error('🦄 No server response!', toastifyErrOptions );
         } else if (err.response?.status === 401) {
           toast.error('🦄 You are unauthorized to take this action. Please login!', toastifyErrOptions );
+        } else if (err.response?.status === 422) {
+          toast.error('🦄 Authentication error. Please login!', toastifyErrOptions );
         }
       }
     }

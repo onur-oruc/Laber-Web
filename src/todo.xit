@@ -4,9 +4,28 @@
 [~] obsolete
 
 
+[@] Notification için güzel bir görüntü ekle.
+    Required fields için altına uyarı bastır
 [@] Bir tane landing page yapılsın. Hemen Sign In page güzel olmaz.
+[@] Analysis page yapılsın
 [] mobil uygulamadaki language codes ile web sitesindekiler aynı olmalı
     gender kısmı mobil uygulama ile eşleşsin
+[] Access Token and roles inside login.js
+[] Task name uniqueliği kontrol edilsin (hem backend hem frontend)
+[x] Create Task: start date end date'ten sonra olacak
+[] keywordler aynı tweet içinde olmak zorunda mı?
+[] scrapper remove deleted tweets
+[x] there should be at least one metric while creating
+[] deleting/editing a created task
+[] customize Twitter scrapper by enabling the customer to use tweets with more than 100 likes, etc
+[] budget section in Create Task page 
+[] Authorization (JWT) token in backend
+[] Email and/or password formatı hatalı olduğunda REGISTER sayfasında uyarı ver.
+[] encrypt password
+[] bir kullanıcı başka bir kullanıcının kullandığı task name'i kullanamıyor
+[] cinsiyet kısmında any seçince diğerleri seçilemesin
+[] authentication çabuk expire oluyor süresini belirle.
+[] clear fields after task creation
 [x] Authentication + create task with the customer email
     1.0 methodlar çağırılmadan önce, gerektiği yerde, 
             if (token && token != "" && token != undefined)
@@ -24,25 +43,6 @@
         doğrudan analiz kısmına yönlendirilmeli
     5. 401 hatası alamıyorum. Uygulama yine istenildiği gibi çalışıyor (?) ama hata 
         kodu yanlış.
-[] Access Token and roles inside login.js
-[@] Notification için güzel bir görüntü ekle.
-    Required fields için altına uyarı bastır
-[@] Task name uniqueliği kontrol edilsin (hem backend hem frontend)
-[] Create Task tarihleri bugünden sonra olacak ve start date end date'ten sonra olacak
-[] keywordler aynı tweet içinde olmak zorunda mı?
-[] scrapper remove deleted tweets
-[@] there should be at least one metric while creating
-[] editing a created task
-[] customize Twitter scrapper by enabling the customer to use tweets with more than 100 likes, etc
-[] budget section in Create Task page 
-[] Authorization (JWT) token in backend
-[] Email and/or password formatı hatalı olduğunda REGISTER sayfasında uyarı ver.
-[] encrypt password
-[] bir kullanıcı başka bir kullanıcının kullandığı task name'i kullanamıyor
-[] cinsiyet kısmında any seçince diğerleri seçilemesin
-[] authentication çabuk expire oluyor süresini belirle.
-[] clear fields after task creation
-
 
 https://xit.jotaen.net/
 

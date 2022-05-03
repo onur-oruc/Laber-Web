@@ -43,7 +43,7 @@ function Login() {
       }
     } catch (err) {
       if (!err?.response) {
-        alert("No Server Response");
+        toast.error('🦄 No server response!', toastifyErrOptions );
       } else if (err.response?.status === 400) {
         toast.error('🦄 Missing Username or Password!', toastifyErrOptions );
       } else if (err.response?.status === 401) {
