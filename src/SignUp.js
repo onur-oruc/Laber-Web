@@ -5,6 +5,7 @@ import './Login.css';
 import Footer from './components/Footer';
 import axios from './api/axios';
 import Login from './Login';
+import FormLabel from '@mui/material/FormLabel';
 
 function SignUp() {
     const[email, setEmail] = useState("");
@@ -14,30 +15,52 @@ function SignUp() {
     const[fullname, setFullname] = useState('');
     const[username, setUsername] = useState('');
     const[isSignedUp, setIsSignedUp] = useState(false);
+    const[isPwdValidRegex, setIsPwdValidRegex] = useState(false);
     
+    //8 to 15 characters which contain at least one lowercase letter,
+    // one uppercase letter, one numeric digit, and one special character
+    const validPwdRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+
+    const isPasswordValid = () => {
+      if (String(password).match(validPwdRegex)) {
+        setIsPwdValidRegex(true);
+      } else {
+        setIsPwdValidRegex(false);
+      }
+    }
+
     const signUp = async (e) => {
       e.preventDefault();
       console.log("in signUp");
-      try {
-        const response = await axios.post('/add_customer', {
-            email: email,
-            name: fullname,
-            username: username,
-            phone: phone,
-            password: password,
-            companyName: companyName
-        })
-        if (response.data.message === "success") {
-          alert ("Signed up successfully");
-          setIsSignedUp(true);
-        } else if (response.data.message === "failed") {
-          alert ("Sign up failed! Check your email and/or password");
-          setIsSignedUp(false);
+      if (isPwdValidRegex) {
+        try {
+          const response = await axios.post('/add_customer', {
+              email: email,
+              name: fullname,
+              username: username,
+              phone: phone,
+              password: password,
+              companyName: companyName
+          })
+          if (response.data.message === "success") {
+            alert ("Signed up successfully");
+            setIsSignedUp(true);
+          } else if (response.data.message === "failed") {
+            alert ("Sign up failed! Check your email and/or password");
+            setIsSignedUp(false);
+          }
+        } catch(error) {
+          alert("No Server Response");
         }
-      } catch(error) {
-        alert("No Server Response");
       }
     }
+
+    useEffect(() => {
+      isPasswordValid()
+      console.log("password: ", password);
+      console.log("valid: ", isPwdValidRegex);
+    }, [password])
+
     return (
         <div>
           {isSignedUp ? <Login/> : (<div className="login__background">
@@ -78,6 +101,18 @@ function SignUp() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}/>
+                {
+                  !isPwdValidRegex 
+                  ? 
+                    (<FormLabel 
+                      style={{marginBottom: 15}}
+                      id="incorrect-format-warning"
+                      color='warning'
+                      error={true}
+                    > Password should be 8 to 15 characters which contains at least one lowercase letter, one uppercase letter, one numeric digit, and one special character *</FormLabel>)
+                  :
+                    <></>
+                }
                 <input 
                   autoFocus
                   id="company" 
