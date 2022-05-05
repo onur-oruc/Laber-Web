@@ -6,6 +6,10 @@ import Footer from './components/Footer';
 import axios from './api/axios';
 import Login from './Login';
 import FormLabel from '@mui/material/FormLabel';
+import { toastifyWarnOptions, toastifyErrOptions, toastifySuccessOptions } from './context/ToastifyOptions';
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function SignUp() {
     const[email, setEmail] = useState("");
@@ -43,14 +47,14 @@ function SignUp() {
               companyName: companyName
           })
           if (response.data.message === "success") {
-            alert ("Signed up successfully");
+            toast.success('🦄 Your account has been created successfully!', toastifySuccessOptions );
             setIsSignedUp(true);
           } else if (response.data.message === "failed") {
-            alert ("Sign up failed! Check your email and/or password");
+            toast.warn('🦄 Check your email and/or password!', toastifyWarnOptions );
             setIsSignedUp(false);
           }
         } catch(error) {
-          alert("No Server Response");
+          toast.error('🦄 An error occured. Please try againa!', toastifyErrOptions);
         }
       }
     }
@@ -137,6 +141,7 @@ function SignUp() {
               </div> 
             </div>
             <div className="loginScreen__gradient"/>
+            <ToastContainer />
           </div>)}
           </div>
     )
