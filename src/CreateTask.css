@@ -101,11 +101,12 @@
 }
 
 .CreateTask_CustomPicker {
-	background-color: aqua;
+	background-color: white;
 	padding: 7px;
 	font-size: 15px;
-	border: 1px solid red;
-	width: 175px;
+	border: 1px solid lightblue;
+	color: #1976d2;
+	width: 185px;
 	cursor: pointer;
 }
 
@@ -118,9 +119,49 @@
 	margin-left: 8px;
 	font-family: 'Times New Roman', Times, serif;
 	font-size: 17px;
-	color: red;
+	margin-bottom: 5px;
+	color: black;
 }
 
+.CreateTask__Headers{
+	font-size: 30px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+    position: relative;
+    color: #37517e;
+}
+
+.CreateTask__HeadersTaskName {
+	font-size: 32px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+    position: relative;
+    color: #37517e;
+}
+
+.CreateTask__HeadersTimeInterval {
+	font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+    position: relative;
+    color: #37517e;
+}
+
+.CreateTask__HeadersV2{
+	font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    position: relative;
+    color: #37517e;
+}
 
 .CreateTask__Preferences {
 	margin: 5% 15% 1% 15%;
