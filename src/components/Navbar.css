@@ -1,5 +1,5 @@
 .Navbar-header {
-	background-color: #8db889;
+	background-color: white;
 	padding: 15px; /*difference between margin and padding: 
 					padding -> edit inside the component
 					margin -> edit outside the component*/
@@ -14,7 +14,7 @@
 	text-decoration: none;
 	font-size: 20px;
 	margin-left: 25px;
-	color: white;
+	color: black;
 	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
