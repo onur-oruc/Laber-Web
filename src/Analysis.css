@@ -11,3 +11,13 @@
 .Analysis-background {
 	/* background-color: #313e4c; */
 }
+
+.Analysis__TaskHeader {
+	font-size: 32px;
+	color: rgb(255, 0, 242)
+}
+
+.Analysis__PageTitle {
+	font-size: 40px;
+	color: rgb(255, 0, 242)
+}

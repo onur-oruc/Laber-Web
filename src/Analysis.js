@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
 import "./Analysis.css"
+import "./components/BarChart.css"
 import ContinuousChart from './components/ContinuousChart'
 import {useAuth} from './context/AuthProvider'
 import {useNavigate} from 'react-router-dom'
@@ -9,12 +10,25 @@ import { toastifyWarnOptions, toastifyErrOptions, toastifySuccessOptions } from 
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import axios from './api/axios';
+import Histogram from 'react-chart-histogram';
+import BarChart from './components/BarChart'
+import ScalarMetricSlider from './components/ScalarMetricSlider'
+import PieChart from './components/PieChart'
+
 
 function Analysis() {
   const [tasks, setTasks] = useState([]);
+  const [isTasksEmpty, setIsTasksEmpty] = useState(true);
   const {auth} = useAuth();
+  const histogramOptions = { fillColor: '#9409e5', strokeColor: '#FFFFFF' };
+  const [results, setResults] = useState({});
   console.log("auth in Analysis: ", auth);
   let navigate = useNavigate();
+
+  const modifyResults = () => {
+    setResults({})
+    console.log("inside modifyResults")
+  }
 
   useEffect(() => {
     navigate('/Analysis');
@@ -45,9 +59,13 @@ function Analysis() {
   }, [])
 
   useEffect(() => {
-    console.log("tasks: ", tasks.data['amber heard']);
+    console.log("tasks: ", tasks);
+    console.log("tasks length, ", tasks.length)
+    if (tasks.length > 0) {
+      setIsTasksEmpty(false);
+    }
   }, [tasks])
-  
+
   return (
     <div>
       {
@@ -56,13 +74,70 @@ function Analysis() {
         (<div className='Analysis-background' >
           <Navbar/>       
           <div className="Analysis">
-            <br/>sa<br/>
-            <ContinuousChart/>
-            <ContinuousChart/>
-            <ContinuousChart/>
-            <ContinuousChart/>
-            <ContinuousChart/>
-            <ContinuousChart/>
+          <p className='Analysis__PageTitle'><span><strong>Results</strong></span></p> 
+            {tasks?.data ?         
+              (Object.keys(tasks.data).map((taskName, taskNameIndex) => (
+                <div>
+                  <p className='Analysis__TaskHeader'><span><strong>Task: </strong></span> {taskName}</p> 
+                  {
+                    tasks?.data[taskName]['scalar'] ?
+                    (
+                      Object.keys(tasks.data[taskName]['scalar'][0]).map((scalarMetric, scalarMetricIndex) => (
+                        <div className='ScalarMetricSlider__div'>
+                          {/* <p>scalar result: {scalarMetric}: {tasks.data[taskName]['scalar'][scalarMetric]} </p> */}
+                            {/* <p>scalar metric: {tasks.data[taskName]['scalar'][0][scalarMetric]}</p> */}
+                            <ScalarMetricSlider 
+                              taskNameProp={taskName} 
+                              scalarMetricName={tasks.data[taskName]['scalar'][0][scalarMetric]}
+                              value={tasks.data[taskName]['scalar'][1][scalarMetricIndex]}/>
+                        </div>
+                      ))
+                    ):<></>
+                  }
+                  {
+                    tasks?.data[taskName]['nonscalar'] ?
+                    (
+                      Object.keys(tasks.data[taskName]['nonscalar']).map((nonScalarMetric, nonScalarMetricIndex) => (
+                        <div>
+                          {/* <p>non scalar metric name: {nonScalarMetric}</p> */}
+                          {
+                            Object.keys(tasks.data[taskName]['nonscalar'][nonScalarMetric]).map((nonScalarMetricResult, nonScalarMetricReulstId) => (
+                              <div>
+                                {/* <p> {nonScalarMetric} : non scalar result: {nonScalarMetricResult} </p> */}
+                                
+                              </div> 
+                            ))
+                          }
+                          <div className="BarChart__div">
+                            {/* <p> hey 0 : {tasks.data[taskName]['nonscalar'][nonScalarMetric][0]}</p>
+                            <p> hey 1 : type:{tasks.data[taskName]['nonscalar'][nonScalarMetric][1]}</p> */}
+                             
+                            {/* <Histogram
+                              xLabels={tasks.data[taskName]['nonscalar'][nonScalarMetric][0]} 
+                              yValues={tasks.data[taskName]['nonscalar'][nonScalarMetric][1]}
+                              width='400'
+                              height='200'
+                              options={histogramOptions}
+                            /> */}
+                            <BarChart
+                              chartTitle={nonScalarMetric} 
+                              labels={tasks.data[taskName]['nonscalar'][nonScalarMetric][0]}
+                              values={tasks.data[taskName]['nonscalar'][nonScalarMetric][1]}
+                              min={null}
+                              max={null}/>
+                            <PieChart
+                              chartTitle={nonScalarMetric}
+                              labels={tasks.data[taskName]['nonscalar'][nonScalarMetric][0]}
+                              values={tasks.data[taskName]['nonscalar'][nonScalarMetric][1]} />
+                          </div>
+                    
+                        </div>
+                      ))
+                    ):<></>
+                  }
+                </div>
+              ))) : <></>
+            }
           </div>
         </div>) 
       : 
