@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from '../assets/netflix_logo.png';
+import logo from '../assets/laber_logo.png';
 import './Navbar.css';
 import {Link} from 'react-router-dom';
 import {useNavigate} from 'react-router-dom'
@@ -22,9 +22,9 @@ function Navbar() {
       <img src={logo} className="App-headerImage" alt="logo" />
        <div className='Navbar-links'>
         <Link to="/Analysis">Analysis</Link>
-        <Link to="/Account">Account</Link>
+        {/* <Link to="/Account">Account</Link> */}
         <Link to="/CreateTask">Create Task</Link>
-        <Link to="/Payment">Payment</Link>
+        {/* <Link to="/Payment">Payment</Link> */}
         <button onClick={logout}> Log Out </button>
        </div>
     </div>
