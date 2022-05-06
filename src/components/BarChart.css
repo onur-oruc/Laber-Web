@@ -1,0 +1,12 @@
+.BarChart__div {
+    margin-bottom: 150px;
+    margin-left: 10%;
+    width: 1000px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.ScalarMetricSlider__div {
+    margin-left: 24%;
+    margin-bottom: 25px;
+}
