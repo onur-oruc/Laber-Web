@@ -175,27 +175,31 @@ function CreateTask() {
             <Navbar/>
             <div className="CreateTask">
               <div className="CreateTask__Keywords">
+                <h2 className='CreateTask__Headers'>TASK DETAILS</h2>
                 <TaskDetails array={keywords} arrayUpdater={updateKeyword} label="Keyword"/>
                 <TaskDetails array={hashtags} arrayUpdater={setHastags} label="Hashtag"/>
                 <Metric scalarMetrics={scalarMetrics} setScalarMetrics={setScalarMetrics}
                         nonScalarMetrics={nonScalarMetrics} setNonScalarMetrics={setNonScalarMetrics} />
               </div>
             <div className="CreateTask__Middle">
+            <h2 className='CreateTask__HeadersTaskName'>TASK NAME</h2>
             <TextField style={{ width: 185}}
                   id="outlined-basic" 
                   label={"Task Name"}
                   variant="outlined"
                   onChange={(e) => setTaskName(e.target.value)}
               />
-              <WebsiteCheckbox 
+              <br/><br/><br/>
+              {/* <WebsiteCheckbox 
                 handleChangeTwitter={handleChangeTwitter} 
                 handleChangeFB={handleChangeFacebook}
                 isTwitterSelected={isTwitterSelected}
-                isFacebookSelected={isFacebookSelected}/>
+                isFacebookSelected={isFacebookSelected}/> */}
               <div className="CreateTask__DatePicker">
-                <div className="CreateTask">
+                {/* <div className="CreateTask">
                   <label>Select a Time Interval</label>
-                </div>
+                </div> */}
+                <h2 className='CreateTask__HeadersTimeInterval'>TIME INTERVAL</h2>
                 <DatePickerComponent 
                   handleClick={handleClickStart} 
                   date={startDate} 
@@ -215,12 +219,13 @@ function CreateTask() {
               </div>
             </div>
             <div className="CreateTask__Preferences">
+            <h2 className='CreateTask__HeadersV2'>EXPERT PREFERENCES</h2>
               <ExpertPreferences 
                 minAge={minAge} 
                 setMinAge={setMinAge}
                 maxAge={maxAge}
                 setMaxAge={setMaxAge}/>
-              <div style={{ color: 'blue', lineHeight : 10, marginTop: 50 }}> 
+              <div style={{ color: '#1976d2', lineHeight : 10, marginTop: 50 }}> 
                 <GenderRadioButton 
                   isFemale={isFemale} 
                   setIsFemale={setIsFemale}
@@ -240,7 +245,7 @@ function CreateTask() {
             </div>
           </div>
           <div className='CreateTask__TopButtons'>
-            <div className='CreateTask__UploadButton'>
+            <div >
               <UploadData/> 
             </div>
             <div className='CreateTask__SubmitButton'>
