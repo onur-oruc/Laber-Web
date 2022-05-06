@@ -101,7 +101,7 @@ function Metric({scalarMetrics, setScalarMetrics, nonScalarMetrics, setNonScalar
 
     return (
         <div>
-            <div className="Metric__Box">
+            <div >
                 <div className='Metric__Name'>
                 <TextField 
                     id="outlined-basic" 
