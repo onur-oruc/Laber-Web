@@ -68,7 +68,8 @@ function Analysis() {
 
   const downloadResult = async(taskName) => {
     try {
-      const response = await axios.get('/get_answers_in_json/'+ taskName, 
+      const response = await axios.post('/get_answers_in_json',
+      {taskName: taskName}, 
         {
           headers: {
             'Authorization': "Bearer " + sessionStorage.getItem("access_token"),
@@ -76,7 +77,7 @@ function Analysis() {
           }
         }
       )
-      console.log("json download: ", response.data);
+      console.log("json download: ", response);
     } catch (error) {
 
     }

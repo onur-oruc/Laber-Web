@@ -31,6 +31,7 @@ function SignUp() {
       } else {
         setIsPwdValidRegex(false);
       }
+      //setIsPwdValidRegex(true);
     }
 
     const signUp = async (e) => {
