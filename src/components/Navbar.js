@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from '../assets/laber_logo.png';
+import logo from '../assets/laber_logov2.png';
 import './Navbar.css';
 import {Link} from 'react-router-dom';
 import {useNavigate} from 'react-router-dom'

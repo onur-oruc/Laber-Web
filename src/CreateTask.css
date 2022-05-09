@@ -12,6 +12,19 @@
 	margin-top: 10px;
 }
 
+.CreateTask__MetricsBox {
+	
+	border: 1px solid lightgray;
+	overflow-y: scroll;
+	align-items: center;
+	padding-left: 15px;
+	padding-bottom: 15px;
+	justify-content: center;
+	width: 350px;
+	height: 200px;
+	margin-top: 10px;
+}
+
 
 .Metric__Name {
 	width: 180px;
@@ -76,7 +89,7 @@
 
 
 .CreateTask__Keywords {
-	margin: 5% 15% 1% 15%;
+	margin: 1% 15% 1% 15%;
 }
 
 
@@ -86,7 +99,7 @@
 }
 
 .CreateTask__Middle {
-	margin: 5% 1% 1% 1%;
+	margin: 1% 1% 1% 1%;
 }
 
 .CreateTask {
@@ -163,8 +176,18 @@
     color: #37517e;
 }
 
+.CreateTask__UploadDataCSS{
+	margin-top: 50px;
+}
 .CreateTask__Preferences {
-	margin: 5% 15% 1% 15%;
+	margin: 1% 15% 1% 15%;
+}
+
+.CreateTask__DataTypeRadioButton {
+	margin-top: 100px;
+	align-items: center;
+	display: flex;
+	justify-content: center;
 }
 
 .CreateTask__TopButtons {

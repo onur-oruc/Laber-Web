@@ -21,3 +21,8 @@
 	font-size: 40px;
 	color: rgb(255, 0, 242)
 }
+
+.ResultsTitleFont {
+	text-decoration: underline;
+	font-family: "Times New Roman", Times, serif;
+}

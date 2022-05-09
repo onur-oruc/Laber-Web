@@ -1,0 +1,8 @@
+.ScalarMetric__ScalarMetric {
+    margin-top: 10px;
+    width: 300px;
+}
+
+.ScalarMetric__ScalarMetric > p {
+    display: flex;
+}

@@ -16,6 +16,7 @@ import { toastifyWarnOptions} from '../context/ToastifyOptions';
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
+
 function Metric({scalarMetrics, setScalarMetrics, nonScalarMetrics, setNonScalarMetrics}) {
     const [metricType, setMetricType] = useState('');
     const [metricName, setMetricName] = useState('');
@@ -53,10 +54,10 @@ function Metric({scalarMetrics, setScalarMetrics, nonScalarMetrics, setNonScalar
             toast.warn('🦄 Minimum value for the metric cannot be negative!', toastifyWarnOptions );
             return false;
         }
-        if ( minScalar > maxScalar) {
-            toast.warn('🦄 Minimum value for the metric cannot be bigger than maximum value!', toastifyWarnOptions );
-            return false;
-        }
+        // if ( minScalar > maxScalar) {
+        //     toast.warn('🦄 Minimum value for the metric cannot be bigger than maximum value!', toastifyWarnOptions );
+        //     return false;
+        // }
         return true;
     }
 
@@ -185,29 +186,31 @@ function Metric({scalarMetrics, setScalarMetrics, nonScalarMetrics, setNonScalar
                     <Button variant='outlined' size="small" onClick={addMetric}>Add a Metric</Button>
                 </div>
             </div>
-            <div>
-            {scalarMetrics.map((metric, id) => (
-                // metric.name + " " + metric.min + " " + metric.max 
-                <ScalarMetric 
-                    key={id} 
-                    name={metric.name} 
-                    min={metric.min} 
-                    max={metric.max}
-                    scalarMetrics={scalarMetrics}
-                    setScalarMetrics={setScalarMetrics}/>
-                ))
+            { (scalarMetrics.length > 0 || nonScalarMetrics.length > 0) &&
+                <div className='CreateTask__MetricsBox'>
+                    {scalarMetrics.map((metric, id) => (
+                        // metric.name + " " + metric.min + " " + metric.max 
+                        <ScalarMetric 
+                            key={id} 
+                            name={metric.name} 
+                            min={metric.min} 
+                            max={metric.max}
+                            scalarMetrics={scalarMetrics}
+                            setScalarMetrics={setScalarMetrics}/>
+                        ))
+                    }
+                    {nonScalarMetrics.map((metric, id) => (
+                        // metric.name + " " + metric.metricKeys
+                        <NonScalarMetric 
+                            key={id}
+                            name={metric.name}
+                            keys={metric.metricKeys}
+                            nonScalarMetrics={nonScalarMetrics}
+                            setNonScalarMetrics={setNonScalarMetrics}/>
+                        ))
+                    }
+                </div>
             }
-            {nonScalarMetrics.map((metric, id) => (
-                // metric.name + " " + metric.metricKeys
-                <NonScalarMetric 
-                    key={id}
-                    name={metric.name}
-                    keys={metric.metricKeys}
-                    nonScalarMetrics={nonScalarMetrics}
-                    setNonScalarMetrics={setNonScalarMetrics}/>
-                ))
-            }
-            </div>
             <ToastContainer />
         </div>
     )

@@ -14,7 +14,7 @@ import Histogram from 'react-chart-histogram';
 import BarChart from './components/BarChart'
 import ScalarMetricSlider from './components/ScalarMetricSlider'
 import PieChart from './components/PieChart'
-
+import Button from '@mui/material/Button'
 
 function Analysis() {
   const [tasks, setTasks] = useState([]);
@@ -66,6 +66,22 @@ function Analysis() {
     }
   }, [tasks])
 
+  const downloadResult = async(taskName) => {
+    try {
+      const response = await axios.get('/get_answers_in_json/'+ taskName, 
+        {
+          headers: {
+            'Authorization': "Bearer " + sessionStorage.getItem("access_token"),
+            // 'Authorization': "Bearer " + auth.accessToken -> does NOT work after refresh
+          }
+        }
+      )
+      console.log("json download: ", response.data);
+    } catch (error) {
+
+    }
+  }
+
   return (
     <div>
       {
@@ -74,11 +90,14 @@ function Analysis() {
         (<div className='Analysis-background' >
           <Navbar/>       
           <div className="Analysis">
-          <p className='Analysis__PageTitle'><span><strong>Results</strong></span></p> 
+          <p className='Analysis__PageTitle'><span><strong className="ResultsTitleFont">Results</strong></span></p> 
             {tasks?.data ?         
               (Object.keys(tasks.data).map((taskName, taskNameIndex) => (
                 <div>
                   <p className='Analysis__TaskHeader'><span><strong>Task: </strong></span> {taskName}</p> 
+                  {/* <Button onClick={() => {
+                    downloadResult(taskName)
+                  }}>Download Analysis</Button> */}
                   {
                     tasks?.data[taskName]['scalar'] ?
                     (

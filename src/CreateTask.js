@@ -19,6 +19,8 @@ import { toastifyWarnOptions, toastifyErrOptions, toastifySuccessOptions } from 
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import Unauthorized from './components/Unauthorized'
+import DataTypeSelectionRadioButton from './components/DataTypeSelectionRadioButton'
+import FormData from 'form-data'
 
 
 function CreateTask() {
@@ -41,6 +43,10 @@ function CreateTask() {
   const [isTransgender, setIsTransgender] = useState(false);
   const [isGenderNeutral, setIsGenderNeutral] = useState(false);
   const [isNonBinary, setIsNonBinary] = useState(false);
+  const [dataLink, setDataLink] = useState('');
+  const [taskDataType, setTaskDataType] = useState(null) // 0: Twitter, 1: Upload Image
+  const [zipFile, setZipFile] = useState("");
+  
   const {auth, setAuth} = useAuth();
 
   const handleChangeTwitter = (e) => {
@@ -63,24 +69,27 @@ function CreateTask() {
   };
 
   const isDateInputsValid = () => {
-    if (startDate.getTime() > endDate.getTime()) {
-      toast.warn('🦄 End date cannot be before the start date!', toastifyWarnOptions );
-      return false;
+    if (taskDataType === 0) {
+      if (startDate.getTime() > endDate.getTime()) {
+        toast.warn('🦄 End date cannot be before the start date!', toastifyWarnOptions );
+        return false;
+      }
     }
     return true;
   }
 
+  useState(() => {
+    console.log("task data type: ", taskDataType);
+    // if (taskDataType === 1 )
+  }, [taskDataType])
+
   const isRequiredFieldsFilled = () => {
-    if (!keywords.length && !hashtags.length) {
-      toast.warn('🦄 Enter at least one keyword/hashtag!', toastifyWarnOptions );
-      return false;
-    } 
-    if (!scalarMetrics.length && !nonScalarMetrics.length) {
-      toast.warn('🦄 Enter at least one scalar/non-scalar metric!', toastifyWarnOptions );
-      return false;
-    }
     if (!taskName || taskName === undefined || taskName === '') {
       toast.warn('🦄 Enter a task name!', toastifyWarnOptions );
+      return false;
+    }
+    if (!scalarMetrics.length && !nonScalarMetrics.length) {
+      toast.warn('🦄 Enter at least one scalar/non-scalar metric!', toastifyWarnOptions );
       return false;
     }
     if (!minAge || minAge === undefined || minAge === '') {
@@ -107,6 +116,16 @@ function CreateTask() {
       toast.warn('🦄 Select at least one language!', toastifyWarnOptions );
       return false;
     }
+    if (taskDataType === 0) { // Twitter
+      if (!keywords.length && !hashtags.length) {
+        toast.warn('🦄 Enter at least one keyword/hashtag!', toastifyWarnOptions );
+        return false;
+      } 
+    }
+    else if (taskDataType === 1) { // Custom Image Data
+
+    }
+
     return true
   }
 
@@ -116,7 +135,7 @@ function CreateTask() {
       try {
         const response = await axios.post('/add_task', 
           {
-            customerEmail: auth.email,
+            customerEmail: sessionStorage.getItem("email"),
             taskName: taskName, 
             keywords: keywords,
             hashtags: hashtags,
@@ -133,11 +152,14 @@ function CreateTask() {
             isTransgender: isTransgender,
             isGenderNeutral: isGenderNeutral,
             isNonBinary: isNonBinary,
-            languages: languages
+            languages: languages,
+            dataLink: dataLink,
+            taskDataType: taskDataType,
+            zipFile: zipFile
           }, 
           {
             headers: {
-              'Authorization': "Bearer " + sessionStorage.getItem("access_token")
+              'Authorization': "Bearer " + sessionStorage.getItem("access_token"),
               // 'Authorization': "Bearer " + auth.accessToken -> does NOT work after refresh
             }
           }
@@ -161,11 +183,25 @@ function CreateTask() {
       }
     }
   }
+  
+  // useEffect(() => {
+  //   console.log("scalar metrics: " + JSON.stringify(scalarMetrics));
+  //   console.log("non-scalar metrics: " + JSON.stringify(nonScalarMetrics));
+  // }, [scalarMetrics, nonScalarMetrics])
+  // useEffect(() => {
+  //   setZipFile("")
+  // }, [])
 
   useEffect(() => {
-    console.log("scalar metrics: " + JSON.stringify(scalarMetrics));
-    console.log("non-scalar metrics: " + JSON.stringify(nonScalarMetrics));
-  }, [scalarMetrics, nonScalarMetrics])
+    // clear images, keywords and hashtags
+    updateKeyword([])
+    setHastags([])
+    setZipFile("")
+  }, [taskDataType])
+
+  useEffect(() => {
+    console.log("zipFile in CreateTask:  ", zipFile.length);
+  }, [zipFile])
 
   return (
     <div>
@@ -173,29 +209,48 @@ function CreateTask() {
       ?
         (<div>
             <Navbar/>
+            <div className='CreateTask__DataTypeRadioButton'>
+              <DataTypeSelectionRadioButton taskDataType={taskDataType} setTaskDataType={setTaskDataType}/>
+            </div>
             <div className="CreateTask">
               <div className="CreateTask__Keywords">
-                <h2 className='CreateTask__Headers'>TASK DETAILS</h2>
-                <TaskDetails array={keywords} arrayUpdater={updateKeyword} label="Keyword"/>
-                <TaskDetails array={hashtags} arrayUpdater={setHastags} label="Hashtag"/>
+              { taskDataType !== null &&
+                
+                (<div><h2 className='CreateTask__Headers'>TASK DETAILS</h2>
+                { 
+                  taskDataType === 0 && 
+                  (<><TaskDetails array={keywords} arrayUpdater={updateKeyword} label="Keyword"/>
+                  <TaskDetails array={hashtags} arrayUpdater={setHastags} label="Hashtag"/></>)
+                }
                 <Metric scalarMetrics={scalarMetrics} setScalarMetrics={setScalarMetrics}
                         nonScalarMetrics={nonScalarMetrics} setNonScalarMetrics={setNonScalarMetrics} />
+                </div>)
+              }
               </div>
-            <div className="CreateTask__Middle">
-            <h2 className='CreateTask__HeadersTaskName'>TASK NAME</h2>
-            <TextField style={{ width: 185}}
-                  id="outlined-basic" 
-                  label={"Task Name"}
-                  variant="outlined"
-                  onChange={(e) => setTaskName(e.target.value)}
+            {taskDataType !== null && <div className="CreateTask__Middle">
+              <h2 className='CreateTask__HeadersTaskName'>TASK NAME</h2>
+              <TextField style={{ width: 185}}
+                id="outlined-basic" 
+                label={"Task Name"}
+                variant="outlined"
+                onChange={(e) => setTaskName(e.target.value)}
               />
+              <div style={{ marginTop: 50}}>
+                { taskDataType === 1 &&
+                  <UploadData 
+                    zipFile={zipFile} 
+                    setZipFile={setZipFile}
+                    taskName={taskName}
+                    customerEmail={sessionStorage.getItem("email")}/> 
+                }
+              </div>
               <br/><br/><br/>
               {/* <WebsiteCheckbox 
                 handleChangeTwitter={handleChangeTwitter} 
                 handleChangeFB={handleChangeFacebook}
                 isTwitterSelected={isTwitterSelected}
                 isFacebookSelected={isFacebookSelected}/> */}
-              <div className="CreateTask__DatePicker">
+              { taskDataType === 0 && (<><div className="CreateTask__DatePicker">
                 {/* <div className="CreateTask">
                   <label>Select a Time Interval</label>
                 </div> */}
@@ -207,19 +262,20 @@ function CreateTask() {
                   isOpen={isOpenStart}
                   setIsOpen={setIsOpenStart}
                   label="Start Date"/>
-              </div>
-              <div className="CreateTask__DatePicker">
-                <DatePickerComponent 
-                  handleClick={handleClickEnd} 
-                  date={endDate} 
-                  setDate={setEndDate} 
-                  isOpen={isOpenEnd}
-                  setIsOpen={setIsOpenEnd}
-                  label="End Date"/>
-              </div>
-            </div>
-            <div className="CreateTask__Preferences">
-            <h2 className='CreateTask__HeadersV2'>EXPERT PREFERENCES</h2>
+                </div>
+                <div className="CreateTask__DatePicker">
+                  <DatePickerComponent 
+                    handleClick={handleClickEnd} 
+                    date={endDate} 
+                    setDate={setEndDate} 
+                    isOpen={isOpenEnd}
+                    setIsOpen={setIsOpenEnd}
+                    label="End Date"/>
+                </div> </>)
+              }
+            </div> }
+            { taskDataType !== null && <div className="CreateTask__Preferences">
+              <h2 className='CreateTask__HeadersV2'>EXPERT PREFERENCES</h2>
               <ExpertPreferences 
                 minAge={minAge} 
                 setMinAge={setMinAge}
@@ -242,19 +298,18 @@ function CreateTask() {
               <div style={{ color: 'blue', marginTop: 25 }}> 
                 <LanguageSelection array={languages} arrayUpdater={setLanguages} />
               </div>
-            </div>
+            </div> }
           </div>
           <div className='CreateTask__TopButtons'>
-            <div >
-              <UploadData/> 
-            </div>
             <div className='CreateTask__SubmitButton'>
-              <Button 
-                variant='contained' 
-                color='success'
-                onClick={createTask}>
-                Create Task
-              </Button>
+              { (taskDataType === 0 || taskDataType === 1) &&
+                <Button 
+                  variant='contained' 
+                  color='success'
+                  onClick={createTask}>
+                  Create Task
+                </Button>
+              } 
             </div>
           </div> 
           <ToastContainer />
